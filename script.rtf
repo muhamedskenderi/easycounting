@@ -1,0 +1,679 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 USE [easycounting]\
+GO\
+/****** Object:  Table [dbo].[Accounts]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Accounts](\
+	[accountID] [int] IDENTITY(1,1) NOT NULL,\
+	[companyID] [int] NOT NULL,\
+	[nameOnCard] [varchar](50) NULL,\
+	[cardNo] [varchar](max) NULL,\
+	[bankName] [varchar](max) NULL,\
+	[exprDate] [varchar](max) NULL,\
+	[cvc] [varchar](max) NULL,\
+	[isDefault] [bit] NULL,\
+	[hidden] [bit] NULL,\
+ CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED \
+(\
+	[accountID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Active]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Active](\
+	[activeID] [int] IDENTITY(1,1) NOT NULL,\
+	[accNo] [varchar](50) NOT NULL,\
+	[description] [varchar](50) NOT NULL,\
+	[amount] [float] NOT NULL,\
+	[category] [varchar](50) NOT NULL,\
+	[amortizationID] [int] NULL,\
+	[companyID] [int] NULL,\
+	[datePerfomerd] [datetime] NULL,\
+ CONSTRAINT [PK_Active] PRIMARY KEY CLUSTERED \
+(\
+	[activeID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Amortization]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Amortization](\
+	[amortizationID] [int] IDENTITY(1,1) NOT NULL,\
+	[purchaseDate] [datetime] NULL,\
+	[saleDate] [datetime] NULL,\
+	[amortizationRateYearly] [numeric](18, 4) NULL,\
+	[amount] [float] NULL,\
+ CONSTRAINT [PK_Amortization] PRIMARY KEY CLUSTERED \
+(\
+	[amortizationID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Bills]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Bills](\
+	[billID] [int] IDENTITY(1,1) NOT NULL,\
+	[billNo] [varchar](15) NOT NULL,\
+	[billDate] [date] NOT NULL,\
+	[dueDate] [date] NOT NULL,\
+	[status] [varchar](15) NOT NULL,\
+	[discount] [int] NOT NULL,\
+	[vendorID] [int] NOT NULL,\
+	[expenseID] [int] NULL,\
+	[companyID] [int] NOT NULL,\
+	[notes] [varchar](max) NOT NULL,\
+	[total] [float] NOT NULL,\
+	[taxID] [int] NULL,\
+ CONSTRAINT [PK_Bills] PRIMARY KEY CLUSTERED \
+(\
+	[billID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Companies]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Companies](\
+	[companyID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](100) NOT NULL,\
+	[taxNo] [varchar](100) NOT NULL,\
+	[email] [varchar](max) NOT NULL,\
+	[phone] [varchar](100) NULL,\
+	[address] [varchar](100) NULL,\
+	[dateCreated] [datetime] NOT NULL,\
+	[currency] [varchar](3) NOT NULL,\
+	[hidden] [bit] NULL,\
+	[ownersEquity] [float] NULL,\
+ CONSTRAINT [PK_Companies] PRIMARY KEY CLUSTERED \
+(\
+	[companyID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Customers]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Customers](\
+	[customerID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](100) NOT NULL,\
+	[taxNo] [varchar](100) NOT NULL,\
+	[email] [varchar](500) NOT NULL,\
+	[phone] [varchar](100) NULL,\
+	[address] [varchar](100) NOT NULL,\
+	[dateCreated] [datetime] NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_Customers] PRIMARY KEY CLUSTERED \
+(\
+	[customerID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Employees]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Employees](\
+	[employeeID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](50) NOT NULL,\
+	[email] [varchar](50) NOT NULL,\
+	[position] [varchar](50) NOT NULL,\
+	[department] [varchar](50) NOT NULL,\
+	[bruto] [varchar](max) NOT NULL,\
+	[neto] [varchar](max) NOT NULL,\
+	[bonus] [varchar](max) NOT NULL,\
+ CONSTRAINT [PK_Employees] PRIMARY KEY CLUSTERED \
+(\
+	[employeeID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[EmployeesInCompany]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[EmployeesInCompany](\
+	[id] [int] IDENTITY(1,1) NOT NULL,\
+	[employeeID] [int] NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_EmployeesInCompany] PRIMARY KEY CLUSTERED \
+(\
+	[id] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[ExpenseCategory]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[ExpenseCategory](\
+	[expenseID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](100) NOT NULL,\
+	[description] [varchar](max) NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_ExpenseCategory] PRIMARY KEY CLUSTERED \
+(\
+	[expenseID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Invoices]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Invoices](\
+	[invoiceID] [int] IDENTITY(1,1) NOT NULL,\
+	[invoiceNo] [varchar](15) NOT NULL,\
+	[invoiceDate] [date] NOT NULL,\
+	[dueDate] [date] NOT NULL,\
+	[status] [varchar](15) NOT NULL,\
+	[discount] [int] NULL,\
+	[customerID] [int] NOT NULL,\
+	[saleID] [int] NOT NULL,\
+	[companyID] [int] NOT NULL,\
+	[notes] [varchar](max) NULL,\
+	[total] [float] NOT NULL,\
+	[taxID] [int] NULL,\
+ CONSTRAINT [PK_Invoices] PRIMARY KEY CLUSTERED \
+(\
+	[invoiceID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Items]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Items](\
+	[itemID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](150) NOT NULL,\
+	[description] [varchar](max) NULL,\
+	[purchasePrice] [float] NOT NULL,\
+	[salePrice] [float] NOT NULL,\
+	[categoryID] [int] NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED \
+(\
+	[itemID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[ItemsCategory]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[ItemsCategory](\
+	[categoryID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](50) NOT NULL,\
+	[description] [varchar](500) NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_ItemsCategory] PRIMARY KEY CLUSTERED \
+(\
+	[categoryID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[ItemsInBill]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[ItemsInBill](\
+	[id] [int] IDENTITY(1,1) NOT NULL,\
+	[billID] [int] NOT NULL,\
+	[itemID] [int] NOT NULL,\
+	[qt] [int] NOT NULL,\
+ CONSTRAINT [PK_ItemsInBill] PRIMARY KEY CLUSTERED \
+(\
+	[id] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[ItemsInInvoice]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[ItemsInInvoice](\
+	[id] [int] IDENTITY(1,1) NOT NULL,\
+	[itemID] [int] NOT NULL,\
+	[invoiceID] [int] NOT NULL,\
+	[discountItem] [int] NULL,\
+	[taxID] [int] NULL,\
+	[qt] [int] NOT NULL,\
+ CONSTRAINT [PK_ItemsInInvoice] PRIMARY KEY CLUSTERED \
+(\
+	[id] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Passive]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Passive](\
+	[passiveID] [int] IDENTITY(1,1) NOT NULL,\
+	[accNo] [varchar](50) NOT NULL,\
+	[description] [varchar](50) NOT NULL,\
+	[amount] [float] NOT NULL,\
+	[category] [varchar](50) NOT NULL,\
+	[companyID] [int] NULL,\
+	[datePerformed] [datetime] NULL,\
+ CONSTRAINT [PK_Passive] PRIMARY KEY CLUSTERED \
+(\
+	[passiveID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Payments]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Payments](\
+	[paymentID] [int] IDENTITY(1,1) NOT NULL,\
+	[date] [datetime] NOT NULL,\
+	[accountID] [int] NULL,\
+	[vendorID] [int] NULL,\
+	[description] [varchar](300) NULL,\
+	[expenseID] [int] NULL,\
+	[status] [varchar](80) NOT NULL,\
+	[total] [float] NULL,\
+ CONSTRAINT [PK_Payments_1] PRIMARY KEY CLUSTERED \
+(\
+	[paymentID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Payrolls]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Payrolls](\
+	[payrollID] [int] IDENTITY(1,1) NOT NULL,\
+	[month] [varchar](50) NOT NULL,\
+	[companyID] [int] NOT NULL,\
+	[employeeID] [int] NULL,\
+	[description] [varchar](100) NULL,\
+	[userID] [int] NULL,\
+ CONSTRAINT [PK_Payrolls] PRIMARY KEY CLUSTERED \
+(\
+	[payrollID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Revenues]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Revenues](\
+	[revenueID] [int] IDENTITY(1,1) NOT NULL,\
+	[date] [datetime] NOT NULL,\
+	[customerID] [int] NOT NULL,\
+	[status] [varchar](15) NOT NULL,\
+	[total] [float] NOT NULL,\
+	[salesD] [int] NOT NULL,\
+	[description] [varchar](max) NULL,\
+ CONSTRAINT [PK_Revenues] PRIMARY KEY CLUSTERED \
+(\
+	[revenueID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Roles]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Roles](\
+	[roleID] [int] IDENTITY(1,1) NOT NULL,\
+	[role] [varchar](50) NOT NULL,\
+ CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED \
+(\
+	[roleID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[SaleCategory]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[SaleCategory](\
+	[saleID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](100) NOT NULL,\
+	[description] [varchar](max) NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_SaleCategory] PRIMARY KEY CLUSTERED \
+(\
+	[saleID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Taxes]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Taxes](\
+	[taxID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](50) NOT NULL,\
+	[value] [int] NOT NULL,\
+	[description] [varchar](150) NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_Taxes] PRIMARY KEY CLUSTERED \
+(\
+	[taxID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Transactions]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Transactions](\
+	[transactionID] [varchar](100) NOT NULL,\
+	[date] [smalldatetime] NOT NULL,\
+	[billID] [int] NULL,\
+	[paymentID] [int] NULL,\
+	[payrollID] [int] NULL,\
+	[userID] [int] NOT NULL,\
+	[accountID] [int] NOT NULL,\
+	[status] [varchar](50) NULL,\
+ CONSTRAINT [PK_Transactions] PRIMARY KEY CLUSTERED \
+(\
+	[transactionID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Users]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Users](\
+	[userID] [int] IDENTITY(1,1) NOT NULL,\
+	[username] [varchar](max) NOT NULL,\
+	[password] [varchar](max) NOT NULL,\
+	[email] [varchar](max) NOT NULL,\
+	[IsVerified] [bit] NOT NULL,\
+	[ActivationCode] [varchar](max) NOT NULL,\
+	[roleID] [int] NOT NULL,\
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED \
+(\
+	[userID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[UsersInCompany]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[UsersInCompany](\
+	[id] [int] IDENTITY(1,1) NOT NULL,\
+	[userID] [int] NOT NULL,\
+	[companyID] [int] NOT NULL,\
+ CONSTRAINT [PK_UsersInCompany] PRIMARY KEY CLUSTERED \
+(\
+	[id] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+/****** Object:  Table [dbo].[Vendors]    Script Date: 3/7/2022 9:31:54 PM ******/\
+SET ANSI_NULLS ON\
+GO\
+SET QUOTED_IDENTIFIER ON\
+GO\
+CREATE TABLE [dbo].[Vendors](\
+	[vendorID] [int] IDENTITY(1,1) NOT NULL,\
+	[name] [varchar](100) NOT NULL,\
+	[taxNo] [varchar](100) NOT NULL,\
+	[email] [varchar](500) NOT NULL,\
+	[phone] [varchar](100) NULL,\
+	[address] [varchar](100) NULL,\
+	[dateCreated] [datetime] NOT NULL,\
+	[companyID] [int] NOT NULL,\
+	[bankNo] [varchar](100) NULL,\
+ CONSTRAINT [PK_Vendors] PRIMARY KEY CLUSTERED \
+(\
+	[vendorID] ASC\
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]\
+) ON [PRIMARY]\
+GO\
+ALTER TABLE [dbo].[Accounts]  WITH CHECK ADD  CONSTRAINT [FK_Accounts_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Accounts] CHECK CONSTRAINT [FK_Accounts_Companies]\
+GO\
+ALTER TABLE [dbo].[Active]  WITH CHECK ADD  CONSTRAINT [FK_Active_Amortization] FOREIGN KEY([amortizationID])\
+REFERENCES [dbo].[Amortization] ([amortizationID])\
+GO\
+ALTER TABLE [dbo].[Active] CHECK CONSTRAINT [FK_Active_Amortization]\
+GO\
+ALTER TABLE [dbo].[Active]  WITH CHECK ADD  CONSTRAINT [FK_Active_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Active] CHECK CONSTRAINT [FK_Active_Companies]\
+GO\
+ALTER TABLE [dbo].[Bills]  WITH CHECK ADD  CONSTRAINT [FK_Bills_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Bills] CHECK CONSTRAINT [FK_Bills_Companies]\
+GO\
+ALTER TABLE [dbo].[Bills]  WITH CHECK ADD  CONSTRAINT [FK_Bills_ExpenseCategory] FOREIGN KEY([expenseID])\
+REFERENCES [dbo].[ExpenseCategory] ([expenseID])\
+ON DELETE SET NULL\
+GO\
+ALTER TABLE [dbo].[Bills] CHECK CONSTRAINT [FK_Bills_ExpenseCategory]\
+GO\
+ALTER TABLE [dbo].[Bills]  WITH CHECK ADD  CONSTRAINT [FK_Bills_Vendors] FOREIGN KEY([vendorID])\
+REFERENCES [dbo].[Vendors] ([vendorID])\
+GO\
+ALTER TABLE [dbo].[Bills] CHECK CONSTRAINT [FK_Bills_Vendors]\
+GO\
+ALTER TABLE [dbo].[Customers]  WITH CHECK ADD  CONSTRAINT [FK_Customers_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Customers] CHECK CONSTRAINT [FK_Customers_Companies]\
+GO\
+ALTER TABLE [dbo].[EmployeesInCompany]  WITH CHECK ADD  CONSTRAINT [FK_EmployeesInCompany_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[EmployeesInCompany] CHECK CONSTRAINT [FK_EmployeesInCompany_Companies]\
+GO\
+ALTER TABLE [dbo].[EmployeesInCompany]  WITH CHECK ADD  CONSTRAINT [FK_EmployeesInCompany_Employees] FOREIGN KEY([employeeID])\
+REFERENCES [dbo].[Employees] ([employeeID])\
+GO\
+ALTER TABLE [dbo].[EmployeesInCompany] CHECK CONSTRAINT [FK_EmployeesInCompany_Employees]\
+GO\
+ALTER TABLE [dbo].[ExpenseCategory]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseCategory_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[ExpenseCategory] CHECK CONSTRAINT [FK_ExpenseCategory_Companies]\
+GO\
+ALTER TABLE [dbo].[Invoices]  WITH CHECK ADD  CONSTRAINT [FK_Invoices_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Invoices] CHECK CONSTRAINT [FK_Invoices_Companies]\
+GO\
+ALTER TABLE [dbo].[Invoices]  WITH CHECK ADD  CONSTRAINT [FK_Invoices_Customers] FOREIGN KEY([customerID])\
+REFERENCES [dbo].[Customers] ([customerID])\
+GO\
+ALTER TABLE [dbo].[Invoices] CHECK CONSTRAINT [FK_Invoices_Customers]\
+GO\
+ALTER TABLE [dbo].[Invoices]  WITH CHECK ADD  CONSTRAINT [FK_Invoices_SaleCategory] FOREIGN KEY([saleID])\
+REFERENCES [dbo].[SaleCategory] ([saleID])\
+GO\
+ALTER TABLE [dbo].[Invoices] CHECK CONSTRAINT [FK_Invoices_SaleCategory]\
+GO\
+ALTER TABLE [dbo].[Items]  WITH CHECK ADD  CONSTRAINT [FK_Items_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Items] CHECK CONSTRAINT [FK_Items_Companies]\
+GO\
+ALTER TABLE [dbo].[Items]  WITH CHECK ADD  CONSTRAINT [FK_Items_ItemsCategory] FOREIGN KEY([categoryID])\
+REFERENCES [dbo].[ItemsCategory] ([categoryID])\
+ON DELETE SET NULL\
+GO\
+ALTER TABLE [dbo].[Items] CHECK CONSTRAINT [FK_Items_ItemsCategory]\
+GO\
+ALTER TABLE [dbo].[ItemsCategory]  WITH CHECK ADD  CONSTRAINT [FK_ItemsCategory_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[ItemsCategory] CHECK CONSTRAINT [FK_ItemsCategory_Companies]\
+GO\
+ALTER TABLE [dbo].[ItemsInBill]  WITH CHECK ADD  CONSTRAINT [FK_ItemsInBill_Bills] FOREIGN KEY([billID])\
+REFERENCES [dbo].[Bills] ([billID])\
+ON DELETE CASCADE\
+GO\
+ALTER TABLE [dbo].[ItemsInBill] CHECK CONSTRAINT [FK_ItemsInBill_Bills]\
+GO\
+ALTER TABLE [dbo].[ItemsInBill]  WITH CHECK ADD  CONSTRAINT [FK_ItemsInBill_Items] FOREIGN KEY([itemID])\
+REFERENCES [dbo].[Items] ([itemID])\
+GO\
+ALTER TABLE [dbo].[ItemsInBill] CHECK CONSTRAINT [FK_ItemsInBill_Items]\
+GO\
+ALTER TABLE [dbo].[ItemsInInvoice]  WITH CHECK ADD  CONSTRAINT [FK_ItemsInInvoice_Invoices] FOREIGN KEY([invoiceID])\
+REFERENCES [dbo].[Invoices] ([invoiceID])\
+ON DELETE CASCADE\
+GO\
+ALTER TABLE [dbo].[ItemsInInvoice] CHECK CONSTRAINT [FK_ItemsInInvoice_Invoices]\
+GO\
+ALTER TABLE [dbo].[ItemsInInvoice]  WITH CHECK ADD  CONSTRAINT [FK_ItemsInInvoice_Items] FOREIGN KEY([itemID])\
+REFERENCES [dbo].[Items] ([itemID])\
+GO\
+ALTER TABLE [dbo].[ItemsInInvoice] CHECK CONSTRAINT [FK_ItemsInInvoice_Items]\
+GO\
+ALTER TABLE [dbo].[Passive]  WITH CHECK ADD  CONSTRAINT [FK_Passive_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Passive] CHECK CONSTRAINT [FK_Passive_Companies]\
+GO\
+ALTER TABLE [dbo].[Payments]  WITH CHECK ADD  CONSTRAINT [FK_Payments_Accounts1] FOREIGN KEY([accountID])\
+REFERENCES [dbo].[Accounts] ([accountID])\
+GO\
+ALTER TABLE [dbo].[Payments] CHECK CONSTRAINT [FK_Payments_Accounts1]\
+GO\
+ALTER TABLE [dbo].[Payments]  WITH CHECK ADD  CONSTRAINT [FK_Payments_ExpenseCategory] FOREIGN KEY([expenseID])\
+REFERENCES [dbo].[ExpenseCategory] ([expenseID])\
+ON DELETE SET NULL\
+GO\
+ALTER TABLE [dbo].[Payments] CHECK CONSTRAINT [FK_Payments_ExpenseCategory]\
+GO\
+ALTER TABLE [dbo].[Payments]  WITH CHECK ADD  CONSTRAINT [FK_Payments_Vendors] FOREIGN KEY([vendorID])\
+REFERENCES [dbo].[Vendors] ([vendorID])\
+GO\
+ALTER TABLE [dbo].[Payments] CHECK CONSTRAINT [FK_Payments_Vendors]\
+GO\
+ALTER TABLE [dbo].[Payrolls]  WITH CHECK ADD  CONSTRAINT [FK_Payrolls_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Payrolls] CHECK CONSTRAINT [FK_Payrolls_Companies]\
+GO\
+ALTER TABLE [dbo].[Payrolls]  WITH CHECK ADD  CONSTRAINT [FK_Payrolls_Employees] FOREIGN KEY([employeeID])\
+REFERENCES [dbo].[Employees] ([employeeID])\
+ON DELETE SET NULL\
+GO\
+ALTER TABLE [dbo].[Payrolls] CHECK CONSTRAINT [FK_Payrolls_Employees]\
+GO\
+ALTER TABLE [dbo].[Payrolls]  WITH CHECK ADD  CONSTRAINT [FK_Payrolls_Users] FOREIGN KEY([userID])\
+REFERENCES [dbo].[Users] ([userID])\
+ON DELETE SET NULL\
+GO\
+ALTER TABLE [dbo].[Payrolls] CHECK CONSTRAINT [FK_Payrolls_Users]\
+GO\
+ALTER TABLE [dbo].[Revenues]  WITH CHECK ADD  CONSTRAINT [FK_Revenues_Customers] FOREIGN KEY([customerID])\
+REFERENCES [dbo].[Customers] ([customerID])\
+GO\
+ALTER TABLE [dbo].[Revenues] CHECK CONSTRAINT [FK_Revenues_Customers]\
+GO\
+ALTER TABLE [dbo].[Revenues]  WITH CHECK ADD  CONSTRAINT [FK_Revenues_SaleCategory] FOREIGN KEY([salesD])\
+REFERENCES [dbo].[SaleCategory] ([saleID])\
+GO\
+ALTER TABLE [dbo].[Revenues] CHECK CONSTRAINT [FK_Revenues_SaleCategory]\
+GO\
+ALTER TABLE [dbo].[Taxes]  WITH CHECK ADD  CONSTRAINT [FK_Taxes_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Taxes] CHECK CONSTRAINT [FK_Taxes_Companies]\
+GO\
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD  CONSTRAINT [FK_Transactions_Accounts] FOREIGN KEY([accountID])\
+REFERENCES [dbo].[Accounts] ([accountID])\
+GO\
+ALTER TABLE [dbo].[Transactions] CHECK CONSTRAINT [FK_Transactions_Accounts]\
+GO\
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD  CONSTRAINT [FK_Transactions_Bills] FOREIGN KEY([billID])\
+REFERENCES [dbo].[Bills] ([billID])\
+GO\
+ALTER TABLE [dbo].[Transactions] CHECK CONSTRAINT [FK_Transactions_Bills]\
+GO\
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD  CONSTRAINT [FK_Transactions_Payments] FOREIGN KEY([paymentID])\
+REFERENCES [dbo].[Payments] ([paymentID])\
+GO\
+ALTER TABLE [dbo].[Transactions] CHECK CONSTRAINT [FK_Transactions_Payments]\
+GO\
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD  CONSTRAINT [FK_Transactions_Payrolls] FOREIGN KEY([payrollID])\
+REFERENCES [dbo].[Payrolls] ([payrollID])\
+GO\
+ALTER TABLE [dbo].[Transactions] CHECK CONSTRAINT [FK_Transactions_Payrolls]\
+GO\
+ALTER TABLE [dbo].[Transactions]  WITH CHECK ADD  CONSTRAINT [FK_Transactions_Users] FOREIGN KEY([userID])\
+REFERENCES [dbo].[Users] ([userID])\
+GO\
+ALTER TABLE [dbo].[Transactions] CHECK CONSTRAINT [FK_Transactions_Users]\
+GO\
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_Roles] FOREIGN KEY([roleID])\
+REFERENCES [dbo].[Roles] ([roleID])\
+GO\
+ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_Roles]\
+GO\
+ALTER TABLE [dbo].[UsersInCompany]  WITH CHECK ADD  CONSTRAINT [FK_UsersInCompany_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[UsersInCompany] CHECK CONSTRAINT [FK_UsersInCompany_Companies]\
+GO\
+ALTER TABLE [dbo].[UsersInCompany]  WITH CHECK ADD  CONSTRAINT [FK_UsersInCompany_Users] FOREIGN KEY([userID])\
+REFERENCES [dbo].[Users] ([userID])\
+ON DELETE CASCADE\
+GO\
+ALTER TABLE [dbo].[UsersInCompany] CHECK CONSTRAINT [FK_UsersInCompany_Users]\
+GO\
+ALTER TABLE [dbo].[Vendors]  WITH CHECK ADD  CONSTRAINT [FK_Vendors_Companies] FOREIGN KEY([companyID])\
+REFERENCES [dbo].[Companies] ([companyID])\
+GO\
+ALTER TABLE [dbo].[Vendors] CHECK CONSTRAINT [FK_Vendors_Companies]\
+GO\
+}

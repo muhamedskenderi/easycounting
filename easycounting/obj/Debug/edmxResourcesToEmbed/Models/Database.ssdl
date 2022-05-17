@@ -1,0 +1,951 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbCon.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Accounts">
+    <Key>
+      <PropertyRef Name="accountID" />
+    </Key>
+    <Property Name="accountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+    <Property Name="nameOnCard" Type="varchar" MaxLength="50" />
+    <Property Name="cardNo" Type="varchar(max)" />
+    <Property Name="bankName" Type="varchar(max)" />
+    <Property Name="exprDate" Type="varchar(max)" />
+    <Property Name="cvc" Type="varchar(max)" />
+    <Property Name="isDefault" Type="bit" />
+    <Property Name="hidden" Type="bit" />
+  </EntityType>
+  <EntityType Name="Active">
+    <Key>
+      <PropertyRef Name="activeID" />
+    </Key>
+    <Property Name="activeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="accNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="amount" Type="float" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="amortizationID" Type="int" />
+    <Property Name="companyID" Type="int" />
+    <Property Name="datePerfomerd" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Amortization">
+    <Key>
+      <PropertyRef Name="amortizationID" />
+    </Key>
+    <Property Name="amortizationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="purchaseDate" Type="datetime" />
+    <Property Name="saleDate" Type="datetime" />
+    <Property Name="amortizationRateYearly" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="amount" Type="float" />
+  </EntityType>
+  <EntityType Name="Bills">
+    <Key>
+      <PropertyRef Name="billID" />
+    </Key>
+    <Property Name="billID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="billNo" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="billDate" Type="date" Nullable="false" />
+    <Property Name="dueDate" Type="date" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="discount" Type="int" Nullable="false" />
+    <Property Name="vendorID" Type="int" Nullable="false" />
+    <Property Name="expenseID" Type="int" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+    <Property Name="notes" Type="varchar(max)" Nullable="false" />
+    <Property Name="total" Type="float" Nullable="false" />
+    <Property Name="taxID" Type="int" />
+  </EntityType>
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="companyID" />
+    </Key>
+    <Property Name="companyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="taxNo" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="email" Type="varchar(max)" Nullable="false" />
+    <Property Name="phone" Type="varchar" MaxLength="100" />
+    <Property Name="address" Type="varchar" MaxLength="100" />
+    <Property Name="dateCreated" Type="datetime" Nullable="false" />
+    <Property Name="currency" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="hidden" Type="bit" />
+    <Property Name="ownersEquity" Type="float" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="customerID" />
+    </Key>
+    <Property Name="customerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="taxNo" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="phone" Type="varchar" MaxLength="100" />
+    <Property Name="address" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="dateCreated" Type="datetime" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="employeeID" />
+    </Key>
+    <Property Name="employeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="position" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="department" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="bruto" Type="varchar(max)" Nullable="false" />
+    <Property Name="neto" Type="varchar(max)" Nullable="false" />
+    <Property Name="bonus" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmployeesInCompany">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employeeID" Type="int" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ExpenseCategory">
+    <Key>
+      <PropertyRef Name="expenseID" />
+    </Key>
+    <Property Name="expenseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="description" Type="varchar(max)" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Invoices">
+    <Key>
+      <PropertyRef Name="invoiceID" />
+    </Key>
+    <Property Name="invoiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoiceNo" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="invoiceDate" Type="date" Nullable="false" />
+    <Property Name="dueDate" Type="date" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="discount" Type="int" />
+    <Property Name="customerID" Type="int" Nullable="false" />
+    <Property Name="saleID" Type="int" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+    <Property Name="notes" Type="varchar(max)" />
+    <Property Name="total" Type="float" Nullable="false" />
+    <Property Name="taxID" Type="int" />
+  </EntityType>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="itemID" />
+    </Key>
+    <Property Name="itemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="description" Type="varchar(max)" />
+    <Property Name="purchasePrice" Type="float" Nullable="false" />
+    <Property Name="salePrice" Type="float" Nullable="false" />
+    <Property Name="categoryID" Type="int" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ItemsCategory">
+    <Key>
+      <PropertyRef Name="categoryID" />
+    </Key>
+    <Property Name="categoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="500" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ItemsInBill">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="billID" Type="int" Nullable="false" />
+    <Property Name="itemID" Type="int" Nullable="false" />
+    <Property Name="qt" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ItemsInInvoice">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="itemID" Type="int" Nullable="false" />
+    <Property Name="invoiceID" Type="int" Nullable="false" />
+    <Property Name="discountItem" Type="int" />
+    <Property Name="taxID" Type="int" />
+    <Property Name="qt" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Passive">
+    <Key>
+      <PropertyRef Name="passiveID" />
+    </Key>
+    <Property Name="passiveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="accNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="amount" Type="float" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="companyID" Type="int" />
+    <Property Name="datePerformed" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="paymentID" />
+    </Key>
+    <Property Name="paymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+    <Property Name="accountID" Type="int" />
+    <Property Name="vendorID" Type="int" />
+    <Property Name="description" Type="varchar" MaxLength="300" />
+    <Property Name="expenseID" Type="int" />
+    <Property Name="status" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="total" Type="float" />
+  </EntityType>
+  <EntityType Name="Payrolls">
+    <Key>
+      <PropertyRef Name="payrollID" />
+    </Key>
+    <Property Name="payrollID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="month" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+    <Property Name="employeeID" Type="int" />
+    <Property Name="description" Type="varchar" MaxLength="100" />
+    <Property Name="userID" Type="int" />
+  </EntityType>
+  <EntityType Name="Revenues">
+    <Key>
+      <PropertyRef Name="revenueID" />
+    </Key>
+    <Property Name="revenueID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+    <Property Name="customerID" Type="int" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="total" Type="float" Nullable="false" />
+    <Property Name="salesD" Type="int" Nullable="false" />
+    <Property Name="description" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="roleID" />
+    </Key>
+    <Property Name="roleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SaleCategory">
+    <Key>
+      <PropertyRef Name="saleID" />
+    </Key>
+    <Property Name="saleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="description" Type="varchar(max)" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Taxes">
+    <Key>
+      <PropertyRef Name="taxID" />
+    </Key>
+    <Property Name="taxID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transactions">
+    <Key>
+      <PropertyRef Name="transactionID" />
+    </Key>
+    <Property Name="transactionID" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="date" Type="smalldatetime" Nullable="false" />
+    <Property Name="billID" Type="int" />
+    <Property Name="paymentID" Type="int" />
+    <Property Name="payrollID" Type="int" />
+    <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="accountID" Type="int" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="userID" />
+    </Key>
+    <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar(max)" Nullable="false" />
+    <Property Name="password" Type="varchar(max)" Nullable="false" />
+    <Property Name="email" Type="varchar(max)" Nullable="false" />
+    <Property Name="IsVerified" Type="bit" Nullable="false" />
+    <Property Name="ActivationCode" Type="varchar(max)" Nullable="false" />
+    <Property Name="roleID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersInCompany">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vendors">
+    <Key>
+      <PropertyRef Name="vendorID" />
+    </Key>
+    <Property Name="vendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="taxNo" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="phone" Type="varchar" MaxLength="100" />
+    <Property Name="address" Type="varchar" MaxLength="100" />
+    <Property Name="dateCreated" Type="datetime" Nullable="false" />
+    <Property Name="companyID" Type="int" Nullable="false" />
+    <Property Name="bankNo" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_Accounts_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Active_Amortization">
+    <End Role="Amortization" Type="Self.Amortization" Multiplicity="0..1" />
+    <End Role="Active" Type="Self.Active" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Amortization">
+        <PropertyRef Name="amortizationID" />
+      </Principal>
+      <Dependent Role="Active">
+        <PropertyRef Name="amortizationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Active_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+    <End Role="Active" Type="Self.Active" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Active">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bills_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Bills">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bills_ExpenseCategory">
+    <End Role="ExpenseCategory" Type="Self.ExpenseCategory" Multiplicity="0..1" />
+    <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExpenseCategory">
+        <PropertyRef Name="expenseID" />
+      </Principal>
+      <Dependent Role="Bills">
+        <PropertyRef Name="expenseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bills_Vendors">
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="1" />
+    <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="vendorID" />
+      </Principal>
+      <Dependent Role="Bills">
+        <PropertyRef Name="vendorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customers_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Customers">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeesInCompany_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="EmployeesInCompany" Type="Self.EmployeesInCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="EmployeesInCompany">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeesInCompany_Employees">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="EmployeesInCompany" Type="Self.EmployeesInCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="employeeID" />
+      </Principal>
+      <Dependent Role="EmployeesInCompany">
+        <PropertyRef Name="employeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExpenseCategory_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="ExpenseCategory" Type="Self.ExpenseCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="ExpenseCategory">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Invoices_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Invoices">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Invoices_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="customerID" />
+      </Principal>
+      <Dependent Role="Invoices">
+        <PropertyRef Name="customerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Invoices_SaleCategory">
+    <End Role="SaleCategory" Type="Self.SaleCategory" Multiplicity="1" />
+    <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SaleCategory">
+        <PropertyRef Name="saleID" />
+      </Principal>
+      <Dependent Role="Invoices">
+        <PropertyRef Name="saleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Items" Type="Self.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_ItemsCategory">
+    <End Role="ItemsCategory" Type="Self.ItemsCategory" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ItemsCategory">
+        <PropertyRef Name="categoryID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="categoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ItemsCategory_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="ItemsCategory" Type="Self.ItemsCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="ItemsCategory">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ItemsInBill_Bills">
+    <End Role="Bills" Type="Self.Bills" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ItemsInBill" Type="Self.ItemsInBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bills">
+        <PropertyRef Name="billID" />
+      </Principal>
+      <Dependent Role="ItemsInBill">
+        <PropertyRef Name="billID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ItemsInBill_Items">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="ItemsInBill" Type="Self.ItemsInBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="itemID" />
+      </Principal>
+      <Dependent Role="ItemsInBill">
+        <PropertyRef Name="itemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ItemsInInvoice_Invoices">
+    <End Role="Invoices" Type="Self.Invoices" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ItemsInInvoice" Type="Self.ItemsInInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Invoices">
+        <PropertyRef Name="invoiceID" />
+      </Principal>
+      <Dependent Role="ItemsInInvoice">
+        <PropertyRef Name="invoiceID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ItemsInInvoice_Items">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="ItemsInInvoice" Type="Self.ItemsInInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="itemID" />
+      </Principal>
+      <Dependent Role="ItemsInInvoice">
+        <PropertyRef Name="itemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Passive_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+    <End Role="Passive" Type="Self.Passive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Passive">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_Accounts1">
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="0..1" />
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="accountID" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="accountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_ExpenseCategory">
+    <End Role="ExpenseCategory" Type="Self.ExpenseCategory" Multiplicity="0..1" />
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExpenseCategory">
+        <PropertyRef Name="expenseID" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="expenseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_Vendors">
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="vendorID" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="vendorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payrolls_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Payrolls" Type="Self.Payrolls" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Payrolls">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payrolls_Employees">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Payrolls" Type="Self.Payrolls" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="employeeID" />
+      </Principal>
+      <Dependent Role="Payrolls">
+        <PropertyRef Name="employeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payrolls_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Payrolls" Type="Self.Payrolls" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Payrolls">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Revenues_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="Revenues" Type="Self.Revenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="customerID" />
+      </Principal>
+      <Dependent Role="Revenues">
+        <PropertyRef Name="customerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Revenues_SaleCategory">
+    <End Role="SaleCategory" Type="Self.SaleCategory" Multiplicity="1" />
+    <End Role="Revenues" Type="Self.Revenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SaleCategory">
+        <PropertyRef Name="saleID" />
+      </Principal>
+      <Dependent Role="Revenues">
+        <PropertyRef Name="salesD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Taxes_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Taxes" Type="Self.Taxes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Taxes">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Accounts">
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="accountID" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="accountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Bills">
+    <End Role="Bills" Type="Self.Bills" Multiplicity="0..1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bills">
+        <PropertyRef Name="billID" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="billID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Payments">
+    <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Payments">
+        <PropertyRef Name="paymentID" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="paymentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Payrolls">
+    <End Role="Payrolls" Type="Self.Payrolls" Multiplicity="0..1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Payrolls">
+        <PropertyRef Name="payrollID" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="payrollID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Transactions_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Roles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="roleID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="roleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersInCompany_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="UsersInCompany" Type="Self.UsersInCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="UsersInCompany">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersInCompany_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UsersInCompany" Type="Self.UsersInCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="userID" />
+      </Principal>
+      <Dependent Role="UsersInCompany">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vendors_Companies">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="Vendors">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbConStoreContainer">
+    <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Active" EntityType="Self.Active" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Amortization" EntityType="Self.Amortization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Bills" EntityType="Self.Bills" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeesInCompany" EntityType="Self.EmployeesInCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ExpenseCategory" EntityType="Self.ExpenseCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ItemsCategory" EntityType="Self.ItemsCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ItemsInBill" EntityType="Self.ItemsInBill" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ItemsInInvoice" EntityType="Self.ItemsInInvoice" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Passive" EntityType="Self.Passive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payrolls" EntityType="Self.Payrolls" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Revenues" EntityType="Self.Revenues" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaleCategory" EntityType="Self.SaleCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Taxes" EntityType="Self.Taxes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersInCompany" EntityType="Self.UsersInCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Accounts_Companies" Association="Self.FK_Accounts_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Active_Amortization" Association="Self.FK_Active_Amortization">
+      <End Role="Amortization" EntitySet="Amortization" />
+      <End Role="Active" EntitySet="Active" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Active_Companies" Association="Self.FK_Active_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Active" EntitySet="Active" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bills_Companies" Association="Self.FK_Bills_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Bills" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bills_ExpenseCategory" Association="Self.FK_Bills_ExpenseCategory">
+      <End Role="ExpenseCategory" EntitySet="ExpenseCategory" />
+      <End Role="Bills" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bills_Vendors" Association="Self.FK_Bills_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Bills" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customers_Companies" Association="Self.FK_Customers_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Customers" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeesInCompany_Companies" Association="Self.FK_EmployeesInCompany_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="EmployeesInCompany" EntitySet="EmployeesInCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeesInCompany_Employees" Association="Self.FK_EmployeesInCompany_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="EmployeesInCompany" EntitySet="EmployeesInCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExpenseCategory_Companies" Association="Self.FK_ExpenseCategory_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="ExpenseCategory" EntitySet="ExpenseCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Invoices_Companies" Association="Self.FK_Invoices_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Invoices" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Invoices_Customers" Association="Self.FK_Invoices_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Invoices" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Invoices_SaleCategory" Association="Self.FK_Invoices_SaleCategory">
+      <End Role="SaleCategory" EntitySet="SaleCategory" />
+      <End Role="Invoices" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_Companies" Association="Self.FK_Items_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_ItemsCategory" Association="Self.FK_Items_ItemsCategory">
+      <End Role="ItemsCategory" EntitySet="ItemsCategory" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ItemsCategory_Companies" Association="Self.FK_ItemsCategory_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="ItemsCategory" EntitySet="ItemsCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ItemsInBill_Bills" Association="Self.FK_ItemsInBill_Bills">
+      <End Role="Bills" EntitySet="Bills" />
+      <End Role="ItemsInBill" EntitySet="ItemsInBill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ItemsInBill_Items" Association="Self.FK_ItemsInBill_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="ItemsInBill" EntitySet="ItemsInBill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ItemsInInvoice_Invoices" Association="Self.FK_ItemsInInvoice_Invoices">
+      <End Role="Invoices" EntitySet="Invoices" />
+      <End Role="ItemsInInvoice" EntitySet="ItemsInInvoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ItemsInInvoice_Items" Association="Self.FK_ItemsInInvoice_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="ItemsInInvoice" EntitySet="ItemsInInvoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Passive_Companies" Association="Self.FK_Passive_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Passive" EntitySet="Passive" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_Accounts1" Association="Self.FK_Payments_Accounts1">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_ExpenseCategory" Association="Self.FK_Payments_ExpenseCategory">
+      <End Role="ExpenseCategory" EntitySet="ExpenseCategory" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_Vendors" Association="Self.FK_Payments_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payrolls_Companies" Association="Self.FK_Payrolls_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Payrolls" EntitySet="Payrolls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payrolls_Employees" Association="Self.FK_Payrolls_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Payrolls" EntitySet="Payrolls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payrolls_Users" Association="Self.FK_Payrolls_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Payrolls" EntitySet="Payrolls" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Revenues_Customers" Association="Self.FK_Revenues_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Revenues" EntitySet="Revenues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Revenues_SaleCategory" Association="Self.FK_Revenues_SaleCategory">
+      <End Role="SaleCategory" EntitySet="SaleCategory" />
+      <End Role="Revenues" EntitySet="Revenues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Taxes_Companies" Association="Self.FK_Taxes_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Taxes" EntitySet="Taxes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Accounts" Association="Self.FK_Transactions_Accounts">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Bills" Association="Self.FK_Transactions_Bills">
+      <End Role="Bills" EntitySet="Bills" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Payments" Association="Self.FK_Transactions_Payments">
+      <End Role="Payments" EntitySet="Payments" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Payrolls" Association="Self.FK_Transactions_Payrolls">
+      <End Role="Payrolls" EntitySet="Payrolls" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Transactions_Users" Association="Self.FK_Transactions_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersInCompany_Companies" Association="Self.FK_UsersInCompany_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="UsersInCompany" EntitySet="UsersInCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersInCompany_Users" Association="Self.FK_UsersInCompany_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersInCompany" EntitySet="UsersInCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vendors_Companies" Association="Self.FK_Vendors_Companies">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Vendors" EntitySet="Vendors" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

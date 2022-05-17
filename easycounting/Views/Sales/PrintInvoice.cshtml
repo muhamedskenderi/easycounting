@@ -1,0 +1,158 @@
+﻿@model easycounting.Models.Invoice
+@using easycounting.Models;
+
+@{
+    Layout = null;
+    DbEnt db = new DbEnt();
+
+    int invoiceID = Convert.ToInt32(Model.invoiceID);
+    var items = db.ItemsInInvoices.Where(x => x.invoiceID == invoiceID).ToList();
+    double s = 0;
+    int taxValue = 0;
+    if (Model.taxID != null)
+    {
+        int givenTaxId = Convert.ToInt32(Model.taxID);
+        var taxRow = db.Taxes.Where(x => x.taxID == givenTaxId).SingleOrDefault();
+        taxValue = taxRow.value;
+
+    }
+
+}
+<link href="~/assets/css/style.css" rel="stylesheet" />
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+<body onload="window.print()">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="invoice-item">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="invoice-logo">
+                            <h2>@Model.Company.name</h2>
+                            <p class="invoice-details invoice-details-two">
+                                <span style="display:block">Tax No: @Model.Company.taxNo </span>
+                                <span style="display:block"> Address: @Model.Company.address </span>
+                                <span style="display:block">
+                                    Phone: @Model.Company.phone
+                                </span>
+                                <span style="display:block"> Email: @Model.Company.email </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="invoice-details" style="font-size:20px">
+                            <strong style="display:block">Invoice No. @Model.invoiceNo</strong>
+                            <strong>Issued date:</strong> @Model.invoiceDate.ToString("dd MMM yyyy")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Item -->
+            <div class="invoice-item">
+                <div class="row">
+
+                    <div class="col-md-12 text-right">
+                        <div class="invoice-info invoice-info2">
+                            <strong class="customer-text">Invoice To</strong>
+
+                            <p class="invoice-details">
+                                <h5>@Model.Customer.name</h5>
+                                <span style="display:block"> @Model.Customer.taxNo </span>
+                                <span style="display:block">@Model.Customer.address</span>
+                                <span style="display:block">@Model.Customer.phone </span>
+                                <span style="display:block">@Model.Customer.email </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Invoice Item -->
+            <!-- Invoice Item -->
+            <div class="invoice-item">
+                <div class="row">
+
+                    <div class="col-md-12 mb-5">
+                      
+
+                    </div>
+                </div>
+            </div>
+            <!-- /Invoice Item -->
+            <!-- Invoice Item -->
+            <div class="invoice-item invoice-table-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="invoice-table table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Items</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in items)
+                                    {
+                                        <tr>
+                                            <td id="itemID">@item.Item.name</td>
+                                            <td class="text-center">@item.Item.description</td>
+
+                                            <td class="text-center" id="qt">@item.qt</td>
+                                            <td class="text-right">@item.Item.purchasePrice MKD</td>
+
+
+                                        </tr>
+                                        s = s + (item.Item.purchasePrice * Convert.ToDouble(item.qt));
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-4 ml-auto">
+                        <div class="table-responsive">
+                            <table class="invoice-table-two table" id="itemsTable">
+                                <tbody>
+                                    <tr>
+                                        <th>Subtotal:</th>
+                                        <td><span id="subtotal">@s MKD</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-muted">Discount:</th>
+                                        <td><span class="text-muted"> @Model.discount %</span></td>
+                                    </tr>
+                                    <tr>
+                                        @if (Model.taxID != null)
+                                        {
+                                            <th class="text-muted">Tax:</th>
+                                            <td><span class="text-muted"> @taxValue %</span></td>
+                                        }
+                                        else
+                                        {
+                                            <th class="text-muted">Tax:</th>
+                                            <td><span class="text-muted"> 0.00 %</span></td>
+                                        }
+
+                                    </tr>
+                                    <tr>
+                                        <th>Total Amount:</th>
+                                        <td><span>@Model.total MKD</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Invoice Item -->
+
+        </div>
+    </div>
+
+
+</body>

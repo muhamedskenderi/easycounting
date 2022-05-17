@@ -1,0 +1,264 @@
+﻿@using easycounting.Models;
+
+@{
+    ViewBag.Title = "Balance";
+    Layout = "~/Views/Shared/Menu.cshtml";
+
+    DbEnt db = new DbEnt();
+
+
+
+    int companyid = Convert.ToInt32(ViewBag.id);
+    List<Active> active = null;
+    List<Passive> passive = null;
+    string from;string to;
+    if (!string.IsNullOrEmpty(Request.Params["from"])  && !string.IsNullOrEmpty(Request.Params["to"]))
+    {
+        from = Request.Params["from"]; to = Request.Params["to"];
+        DateTime f = Convert.ToDateTime(Request.Params["from"].ToString());
+        DateTime t = Convert.ToDateTime(Request.Params["to"].ToString());
+        active = db.Actives.Where(x => x.companyID == companyid && x.datePerfomerd >= f && x.datePerfomerd <= t).ToList();
+        passive = db.Passives.Where(x => x.companyID == companyid && x.datePerformed >= f && x.datePerformed <= t).ToList();
+    }
+    else
+    {
+        from = "";to = "";
+        active = db.Actives.Where(x => x.companyID == companyid).ToList();
+        passive = db.Passives.Where(x => x.companyID == companyid).ToList();
+
+    }
+
+    var comp = db.Companies.Where(x => x.companyID == companyid).SingleOrDefault();
+}
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+<div class="row justify-content-center">
+    <div class="col-xl-8">
+        <div class="row py-4 align-items-center">
+            <div class="col-xs-12 col-sm-6 col-md-6 align-items-center"> 
+                <form class="form-inline" action="/easycounting/reconciliations/balance" method="get">
+
+                    <div class="form-group mb-2">
+                        From
+                        <input type="date" class="form-control ml-2" name="from" id="from" required>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        To
+                        <input type="date" class="form-control ml-2" name="to" id="to" required >
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
+                </form>
+            
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="text-right">
+
+                    <div class="dropup header-drop-top">
+
+
+
+
+
+
+                        <a href="@Url.Action("","home")" class="btn btn-outline-primary">
+                            <i class="fa fa-arrow-left"></i> Dashboard
+                        </a>
+                        <a onclick="printDiv('grid')"id="print" class="btn btn-primary">
+                            <i class="fa fa-print"></i> Print
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" id="grid">
+            <div class="card-body">
+                <div class="invoice-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="invoice-logo">
+                                <h2>@comp.name</h2>
+                                <p class="invoice-details invoice-details-two">
+                                    <span style="display:block">Tax No: @comp.taxNo </span>
+                                    <span style="display:block"> Address: @comp.address </span>
+                                    <span style="display:block">
+                                        Phone: @comp.phone
+                                    </span>
+                                    <span style="display:block"> Email: @comp.email </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="invoice-details" style="font-size:20px">
+                                <h1 class="text-right">Balance</h1>                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 text-right">
+                            <div class="invoice-info invoice-info2">
+                                <strong class="customer-text">Date</strong>
+
+                                <p class="invoice-details">
+                                    <h5>@DateTime.Now.ToString("MMM, yyyy")</h5>
+                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 mb-5">
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item invoice-table-wrap">
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <h4>Active</h4>
+                                <table class="invoice-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Asset</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in active)
+                                        {
+                                            if (item.amortizationID != null)
+                                            {
+                                                <tr>
+                                                    <td id="itemID">@item.description</td>
+                                                    <td class="text-right">(@String.Format("{0:n}", item.amount)) MKD</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td id="itemID">@item.description</td>
+                                                    <td class="text-right">@String.Format("{0:n}", item.amount) MKD</td>
+                                                </tr>
+                                            }
+
+
+                                        }
+                                        <tr class="table-success">
+                                            <td>
+                                                Total assets:
+                                            </td>
+                                            <td class="text-right">@String.Format("{0:n}", ViewBag.active) MKD</td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <h4>Passive</h4>
+                                <table class="invoice-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Liability</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in passive)
+                                        {
+                                            <tr>
+                                                <td id="itemID">@item.description</td>
+                                                <td class="text-right">@String.Format("{0:n}", item.amount) MKD</td>
+
+
+
+
+                                            </tr>
+
+                                        }
+                                        <tr class="table-danger">
+                                            <td>
+                                                Total liabilities:
+                                            </td>
+                                            <td class="text-right">@String.Format("{0:n}", ViewBag.passive) MKD</td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-md-12 col-xl-12 ml-auto">
+                            <div class="table-responsive">
+                                <table class="invoice-table-two table" id="itemsTable">
+                                    <tbody>
+                                        <tr class="text-white bg-warning mb-0">
+                                            <th>Shareholder's equity:</th>
+                                            <td><span id="subtotal">@String.Format("{0:n}", ViewBag.shareholder) MKD</span></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                          
+
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <th>Balance:</th>
+                                            <td><span>@String.Format("{0:n}", ViewBag.balance) MKD</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        var x = @(from);
+        var y = @(to);
+       
+        if (x != null && y != null) {
+            $("#from").val(x.toString());
+            $("#to").val(y);
+        }
+    });
+</script>

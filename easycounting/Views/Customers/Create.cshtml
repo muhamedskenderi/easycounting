@@ -1,0 +1,77 @@
+﻿@model easycounting.Models.Customer
+
+@{
+    ViewBag.Title = "Add New Customer";
+    Layout = "~/Views/Shared/Menu.cshtml";
+
+}
+
+
+
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Customers</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="customers.html">Customers</a></li>
+                <li class="breadcrumb-item active">Add Customers</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Basic Info</h4>
+                @using (Html.BeginForm())
+                {
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @autocomplete="off" } })
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email</label>
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Tax No</label>
+                                @Html.EditorFor(model => model.taxNo, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone</label>
+                                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Address</label>
+                            @Html.TextAreaFor(m => m.address, 5,5,new { @class = "form-control", @style = "margin-top: 0px; margin-bottom: 0px; height: 138px;", @placeholder = "Enter Address", @autocomplete="off"})
+
+                        </div>
+
+
+
+                    </div>
+                 
+                    <div class="text-right mt-4">
+                        <button type="submit" class="btn btn-primary">Add Customer</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

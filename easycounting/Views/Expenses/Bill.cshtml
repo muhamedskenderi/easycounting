@@ -1,0 +1,345 @@
+﻿@using easycounting.Models
+
+@{
+    ViewBag.Title = "Bill";
+
+
+    DbEnt db = new DbEnt();
+
+    int billID = Convert.ToInt32(Model.billID);
+    var items = db.ItemsInBills.Where(x => x.billID == billID).ToList();
+    double s = 0;
+    int taxValue = 0;
+    if (Model.taxID != null)
+    {
+        int givenTaxId = Convert.ToInt32(Model.taxID);
+        var taxRow = db.Taxes.Where(x => x.taxID == givenTaxId).SingleOrDefault();
+        taxValue = taxRow.value;
+
+    }
+
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+
+
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-8">
+        <div class="row py-4 align-items-center">
+            <div class="col-xs-12 col-sm-4 col-md-5 align-items-center"><h2 class="d-inline-flex mb-0 long-texts">Bill: @Model.billNo</h2></div>
+            <div class="col-xs-12 col-sm-8 col-md-7">
+                <div class="text-right">
+
+                    <div class="dropup header-drop-top">
+                        <button type="button" data-toggle="dropdown" aria-expanded="false" class="btn btn-white btn-sm">
+                            <i class="fa fa-chevron-down"></i>&nbsp; More Actions
+                        </button> <div role="menu" class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -2px, 0px);">
+                            <a href="@Url.Action("editbill","expenses", new { id=Model.billID})" class="dropdown-item">
+                                Edit
+                            </a>
+                            @if (Model.status != "Paid")
+                            {
+                                <a href="javascript:void()" data-target="#pay_@billID" data-toggle="modal" class="dropdown-item">
+                                    Pay
+                                </a>
+                            }
+                            <div class="dropdown-divider"></div>
+                            <a href="@Url.Action("printbill", "expenses", new { id = Model.billID,target="_blank" })" target="_blank" class="dropdown-item">
+                                Print
+                            </a>
+                            <a href="@Url.Action("downloadbill", "expenses", new { id = Model.billID })" class="dropdown-item">
+                                Download PDF
+                            </a>  <div class="dropdown-divider"></div> <a href="javascript:void()" data-target="#delete_bill-@billID" data-toggle="modal"  class="dropdown-item action-delete">Delete</a>
+                        </div>
+                        <a href="@Url.Action("create","expenses")" class="btn btn-white btn-sm">
+                            Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row ml-5" style="font-size: inherit !important;">
+            <div class="col-md-2">
+                Status
+                <br /> <strong>
+                    <span class="float-left">
+                        @if (Model.status == "Paid")
+                        {
+                            <span class="badge badge-success">
+                                Paid
+                            </span>
+                        }
+                        else if (Model.status == "Unpaid")
+                        {
+                            <span class="badge badge-danger">
+                                Unpaid
+                            </span>
+                        }
+                        else if (Model.status == "Overdue")
+                        {
+                            <span class="badge badge-warning">
+                                Overdue
+                            </span>
+                        }
+
+                    </span>
+                </strong> <br /><br />
+            </div> <div class="col-md-6">
+                Vendor
+                <br /> <strong>
+                    <span class="float-left">
+                        @Model.Vendor.name
+                    </span>
+                </strong> <br /><br />
+            </div> <div class="col-md-2">
+                Amount due
+                <br /> <strong>
+                    <span class="float-left">
+                        @Model.total MKD
+                    </span>
+                </strong> <br /><br />
+            </div> <div class="col-md-2">
+                Due on
+                <br /> <strong>
+                    <span class="float-left">
+                        @Model.dueDate.ToString("dd MMM yyyy")
+                    </span>
+                </strong> <br /><br />
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="invoice-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="invoice-logo">
+                                <h2>@ViewBag.CompanyName</h2>
+                                <p class="invoice-details invoice-details-two">
+                                    <span style="display:block">Tax No: @Model.Company.taxNo </span>
+                                    <span style="display:block"> Address: @Model.Company.address </span>
+                                    <span style="display:block">
+                                        Phone: @Model.Company.phone
+                                    </span>
+                                    <span style="display:block"> Email: @Model.Company.email </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="invoice-details" style="font-size:20px">
+                                <strong style="display:block">Bill No. @Model.billNo</strong>
+                                <strong>Issued date:</strong> @Model.billDate.ToString("dd MMM yyyy")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 text-right">
+                            <div class="invoice-info invoice-info2">
+                                <strong class="customer-text">Bill To</strong>
+
+                                <p class="invoice-details">
+                                    <h5>@Model.Vendor.name</h5>
+                                    <span style="display:block"> @Model.Vendor.taxNo </span>
+                                    <span style="display:block">@Model.Vendor.address</span>
+                                    <span style="display:block">@Model.Vendor.phone </span>
+                                    <span style="display:block">@Model.Vendor.email </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 mb-5">
+                            @if (Model.status == "Paid")
+                            {
+                                var account = db.Transactions.Where(x => x.billID == billID).SingleOrDefault();
+                                <div class="invoice-info">
+                                    <strong class="customer-text">Payment Method</strong>
+                                    <p class="invoice-details invoice-details-two">
+                                        @account.Account.bankName <br />
+                                        @String.Format("************{0}", decrypt.Base64Decode(account.Account.cardNo).Trim().Substring(12, 4)) <br />
+                                        @account.Account.exprDate<br />
+                                    </p>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item invoice-table-wrap">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="invoice-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Items</th>
+                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Quantity</th>
+                                            <th class="text-right">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in items)
+                                        {
+                                            <tr>
+                                                <td id="itemID">@item.Item.name</td>
+                                                <td class="text-center">@item.Item.description</td>
+
+                                                <td class="text-center" id="qt">@item.qt</td>
+                                                <td class="text-right">@item.Item.purchasePrice MKD</td>
+
+
+                                            </tr>
+                                            s = s + (item.Item.purchasePrice * Convert.ToDouble(item.qt));
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4 ml-auto">
+                            <div class="table-responsive">
+                                <table class="invoice-table-two table" id="itemsTable">
+                                    <tbody>
+                                        <tr>
+                                            <th>Subtotal:</th>
+                                            <td><span id="subtotal">@s MKD</span></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-muted">Discount:</th>
+                                            <td><span class="text-muted"> @Model.discount %</span></td>
+                                        </tr>
+                                        <tr>
+                                            @if (Model.taxID != null)
+                                            {
+                                                <th class="text-muted">Tax:</th>
+                                                <td><span class="text-muted"> @taxValue %</span></td>
+                                            }
+                                            else
+                                            {
+                                                <th class="text-muted">Tax:</th>
+                                                <td><span class="text-muted"> 0.00 %</span></td>
+                                            }
+
+                                        </tr>
+                                        <tr>
+                                            <th>Total Amount:</th>
+                                            <td><span>@Model.total MKD</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@using (Html.BeginForm("PayBill", "Expenses", new { id = billID }, FormMethod.Post))
+{
+    <!-- add card  Modal -->
+    <div id="pay_@billID" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bill. @Model.billNo </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Select Account To Pay</label>
+                                    @Html.DropDownList("accountID", ViewBag.accounts as SelectList, new { @class = "form-control ", @style = "", @name = "accountID" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" name="billID" id="billID" hidden />
+                                    <h4>Total amount: <b>@String.Format("{0:0.00}", Model.total) MKD</b></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn  btn-success float-right" id="submit" type="submit">
+                            <i class="fas fa-cash-register"></i> Pay
+                        </button>
+                        <button class="btn  btn-danger " data-dismiss="modal">
+                            <i class="fa fa-times"></i> Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /add card Modal -->
+}
+
+
+<!-- Delete  Modal -->
+<div id="delete_bill-@billID" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Bill</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("deletebill", "expenses", new { id = billID }, FormMethod.Post))
+                {
+
+
+                    <div class="form-group">
+                        <h3> Bill No. @Model.billNo</h3>
+                        <p> For Vendor: @Model.Vendor.name <br /> Total amount: @String.Format("{0:0.00}", Model.total)</p>
+                        <h5>Are you sure that you want to delete this bill?</h5>
+                    </div>
+
+                    <div class="submit-section">
+                        <input type="submit" class="btn btn-danger submit-btn" value="Delete Bill" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Modal -->
+                            }
+
+<script>
+    $(document).ready(function () {
+
+        $("#billID").val(@billID);
+    });
+</script>

@@ -1,0 +1,129 @@
+﻿@model easycounting.Models.Company
+
+@{
+    Layout = "~/Views/Shared/Menu.cshtml";
+    ViewBag.Title = "Delete Account";
+
+}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<div class="">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">Settings</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Delete Account</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-4">
+
+            <!-- Settings Menu -->
+            <div class="widget settings-menu">
+                <ul>
+                    <li class="nav-item">
+                        <a href="@Url.Action("","settings")" class="nav-link ">
+                            <i class="far fa-user"></i> <span>Profile Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("itemcategories","settings")" class="nav-link">
+                            <i class="fas fa-list"></i> <span>Item Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("taxes","settings")" class="nav-link">
+                            <i class="far fa-check-square"></i> <span>Tax Types</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("sales","settings")" class="nav-link">
+                            <i class="far fa-list-alt"></i> <span>Sale Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("expenses","settings")" class="nav-link">
+                            <i class="far fa-list-alt"></i> <span>Expense Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("changepassword","settings")" class="nav-link">
+                            <i class="fas fa-unlock-alt"></i> <span>Change Password</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("deleteaccount","settings")" class="nav-link active">
+                            <i class="fas fa-ban"></i> <span>Delete Account</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /Settings Menu -->
+
+        </div>
+
+        <div class="col-xl-9 col-md-8">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Delete Account</h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- Form -->
+
+                    <div class="">
+                        <div class=" flex-column">
+                            
+                            <h4 class=" w-100">Are you sure?</h4>
+                        </div>
+                        <div class="">
+                            <p>Do you really want to delete your account? <br />This process cannot be undone and by clicking the Delete button you will not be able to use our services anymore.</p>
+                        </div>
+                        <div class=" justify-content-center">
+                            @using (Html.BeginForm("deactivateaccount","settings",FormMethod.Post))
+                            {
+                                <a class="btn btn-secondary" href="@Url.Action("","home")">Cancel</a>
+
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            }
+                        </div>
+                    </div>  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#username").val("@User.Identity.Name.ToString()");
+        $("#username").text("@User.Identity.Name.ToString()");
+
+
+
+    });
+
+    $(function () {
+        // setTimeout() function will be fired after page is loaded
+        // it will wait for 5 sec. and then will fire
+        // $("#successMessage").hide() function
+        setTimeout(function () {
+            console.log("bbb");
+            $("#successMessage").hide('blind', {}, 500)
+        }, 5000);
+    });
+</script>

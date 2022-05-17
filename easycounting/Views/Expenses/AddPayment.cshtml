@@ -1,0 +1,160 @@
+﻿@model easycounting.Models.Payment
+
+@{
+    ViewBag.Title = "Add Payment";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Expenses</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="easycounting/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="easycounting/expenses">Expenses</a>
+                </li>
+                <li class="breadcrumb-item active">Add Payment</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+
+    <input type="number" id="chosenAccount" name="chosenAccount" hidden />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="#">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Choose vendor</label>
+                                    <div>
+                                        @Html.DropDownList("vendorID", ViewBag.vendors as SelectList, new { @class = "form-control ", @style = "" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>Choose payment expense category</label>
+                                    @Html.DropDownList("expenseID", ViewBag.categories as SelectList, new { @class = "form-control ", @style = "" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    @Html.DropDownList("status", ViewBag.status as SelectList, new { @class = "form-control ", @style = "", onchange = "statusChanged()" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label>Description:</label>
+                                @Html.TextAreaFor(x => x.description, 5, 5, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group" style="margin-top:115px">
+                                    <div class="input-group ">
+                                        @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control",@required="required" } })
+                                        <div class="input-group-append">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">MKD</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-right mt-4">
+                            <button type="submit" class="btn btn-primary">Add Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<!-- payment modal -->
+<div id="add_account" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Account </h5>
+
+            </div>
+            <div class="modal-body">
+
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="name">Select Account To Perform Payment</label>
+                                @Html.DropDownList("accountID", ViewBag.accounts as SelectList, new { @class = "form-control ", @style = "", @name = "accountID" , @id="accountID"})
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="card-footer">
+                    <button class="btn  btn-success float-right" id="chooseBtn">
+                        <i class="fas fa-cash-register"></i> Choose account for payment
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /add card Modal -->
+
+
+
+<script>
+    $("#chosenAccount").val(0);
+
+    function statusChanged() {
+        var val = $("#status").val();
+        if (val === "Paid") {
+            $("#add_account").modal("show");
+
+        }
+        else {
+            $("#chosenAccount").val(0);
+        }
+
+    }
+
+
+    $("#chooseBtn").click(function () {
+
+        $("#chosenAccount").val($("#accountID").val());
+        $("#add_account").modal("hide");
+    });
+
+</script>

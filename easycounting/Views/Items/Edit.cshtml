@@ -1,0 +1,146 @@
+﻿@model easycounting.Models.Item
+
+@{
+
+    int id = Convert.ToInt32(Request.Params["id"]);
+
+    ViewBag.Title = "Edit Item";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Edit Item</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("","items")">Items</a></li>
+                <li class="breadcrumb-item active">Edit Item</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit Information</h4>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Item Name</label>
+                                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Category <a href="javascript:void(0);" data-toggle="modal" data-target="#add_category"><i class="fa fa-plus"></i></a></label>
+                                @Html.DropDownList("categoryID", ViewBag.category as SelectList, new { @class = "form-control " })
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Purchase Price</label>
+
+                            </div>
+
+
+                            <div class="input-group" style="margin-top:-20px">
+                                @Html.EditorFor(model => model.purchasePrice, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group-append">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">MKD</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label>Sale Price</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.salePrice, new { htmlAttributes = new { @class = "form-control" } })
+                                    <div class="input-group-append">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">MKD</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="text-right mt-4">
+                        <input type="submit" value="Update Item" class="btn btn-primary" />
+                    </div>
+
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- Add Category Modal -->
+<div id="add_category" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Create", "Category", new { from = "edit", id = id}, FormMethod.Post))
+                {
+
+
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="category" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description <span class="text-danger"></span></label>
+                        <input class="form-control" type="text" name="descriptionCategory">
+                    </div>
+                    <div class="submit-section">
+                        <input type="submit" class="btn btn-primary submit-btn" value="Add New Category" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Cateogry Modal -->

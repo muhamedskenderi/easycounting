@@ -1,0 +1,121 @@
+﻿@model easycounting.Models.User
+
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+
+
+<div class="page-header">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Edit User</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/easycounting/users">Users</a></li>
+                <li class="breadcrumb-item active">Edit User</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">User Info</h4>
+                @using (Html.BeginForm())
+                {
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Username</label>
+                                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>E-Mail</label>
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                                @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                @if (Model.roleID == 1)
+                                {
+                                    <select id="role" name="role" class="form-control">
+                                        <option value="1" selected="selected">Super Administrator</option>
+                                        <option value="2">Administrator</option>
+                                        <option value="3">Manager</option>
+                                        <option value="4">Employee</option>
+                                    </select>
+
+                                }
+                                else if (Model.roleID == 2)
+                                {
+                                    <select id="role" name="role" class="form-control">
+                                        <option value="1">Super Administrator</option>
+                                        <option value="2" selected="selected">Administrator</option>
+                                        <option value="3">Manager</option>
+                                        <option value="4">Employee</option>
+                                    </select>
+                                }
+                                else if (Model.roleID == 3)
+                                {
+                                    <select id="role" name="role" class="form-control">
+                                        <option value="1">Super Administrator</option>
+                                        <option value="2">Administrator</option>
+                                        <option value="3" selected="selected">Manager</option>
+                                        <option value="4">Employee</option>
+                                    </select>
+                                }
+                                else if (Model.roleID == 4)
+                                {
+                                    <select id="role" name="role" class="form-control">
+                                        <option value="1">Super Administrator</option>
+                                        <option value="2">Administrator</option>
+                                        <option value="3">Manager</option>
+                                        <option value="4" selected="selected">Employee</option>
+                                    </select>
+                                }
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+
+                            <div class="text-right mt-4">
+                                <button type="submit" class="btn btn-primary">Update User</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

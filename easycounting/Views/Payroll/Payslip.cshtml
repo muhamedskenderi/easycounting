@@ -1,0 +1,213 @@
+﻿@model easycounting.Models.Transaction
+
+@using easycounting.Models;
+
+@{
+    ViewBag.Title = "Payslip";
+    Layout = "~/Views/Shared/Menu.cshtml";
+
+    DbEnt db = new DbEnt();
+
+
+
+    int companyid = Convert.ToInt32(ViewBag.id);
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+
+    var comp = db.Companies.Where(x => x.companyID == companyid).SingleOrDefault();
+}
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+<div class="row justify-content-center">
+    <div class="col-xl-8">
+        <div class="row py-4 align-items-center">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="text-right">
+
+                
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <a href="@Url.Action("","home")" class="btn btn-outline-primary">
+                                    <i class="fa fa-arrow-left"></i> Dashboard
+                                </a>
+                                <a onclick="printDiv('grid')" id="print" class="btn btn-primary">
+                                    <i class="fa fa-print"></i> Print
+                                </a>
+                            </div>
+                        </div>
+
+
+          
+                </div>
+            </div>
+        </div>
+        <div class="card" id="grid">
+            <div class="card-body">
+                <div class="invoice-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="invoice-logo">
+                                <h2>@Model.Payroll.Company.name</h2>
+                                <p class="invoice-details invoice-details-two">
+                                    <span style="display:block">Tax No: @Model.Payroll.Company.taxNo </span>
+                                    <span style="display:block"> Address: @Model.Payroll.Company.address </span>
+                                    <span style="display:block">
+                                        Phone: @Model.Payroll.Company.phone
+                                    </span>
+                                    <span style="display:block"> Email: @Model.Payroll.Company.email </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="invoice-details" style="font-size:20px">
+                                <h1 class="text-right">Payslip</h1>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 text-right">
+                            <div class="invoice-info invoice-info2">
+                                <strong class="customer-text">Salaray Month</strong>
+
+                                <p class="invoice-details">
+                                    <h5>@Model.Payroll.month.ToString()</h5>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item">
+                    <div class="row">
+
+                        <div class="col-md-12 mb-5">
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+                <!-- Invoice Item -->
+                <div class="invoice-item invoice-table-wrap">
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <h4>Employee </h4>
+                                <table class="invoice-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Full Name @Model.Payroll.Employee.name</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Department: @Model.Payroll.Employee.department</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Position: @Model.Payroll.Employee.position</th>
+                                        </tr>
+                                        <tr>
+                                            <th>E-Mail: @Model.Payroll.Employee.email</th>
+                                        </tr>
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <h4>Transaction </h4>
+                                <table class="invoice-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction No. @Model.transactionID</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Date of performance: @Model.date</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Status: @Model.status</th>
+                                        </tr>
+                                      
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-md-12 col-xl-12 ml-auto">
+                            <div class="table-responsive">
+                                <table class="invoice-table-two table mt-5 mb-5" id="itemsTable">
+                                    <tbody>
+                                        <tr class="table-primary">
+                                            <th>Bruto:</th>
+                                            <td><span>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.neto))) MKD</span></td>
+                                        </tr>
+                                        <tr class="table-primary mb-0">
+                                            <th>Neto:</th>
+                                            <td><span>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.neto))) MKD</span></td>
+                                        </tr>
+
+                                        <tr class="table-primary mb-0">
+                                            <th>Contributions:</th>
+                                            <td><span id="subtotal">@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.bruto)) - Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.neto))) MKD</span></td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <th>Bonus:</th>
+                                            <td><span>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.bonus))) MKD</span></td>
+                                        </tr>
+                                        @if (decrypt.Base64Decode(Model.Payroll.Employee.bonus) != "0")
+                                        {
+                                            <tr class="table-success mb-0">
+                                                <th>Total Amount:</th>
+                                                <td><span>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.bruto)) + Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.bonus))) MKD</span></td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr class="table-success mb-0">
+                                                <th>Total Amount:</th>
+                                                <td><span>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(Model.Payroll.Employee.bruto))) MKD</span></td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /Invoice Item -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

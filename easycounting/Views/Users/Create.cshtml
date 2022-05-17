@@ -1,0 +1,136 @@
+﻿@model easycounting.Models.User
+
+@{
+    ViewBag.Title = "Add User";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+
+
+<div class="page-header">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Add User</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/easycounting/users">Users</a></li>
+                <li class="breadcrumb-item active">Add User</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">User Info</h4>
+                @using (Html.BeginForm())
+                {
+            <div class="row">
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Username</label>
+                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>E-Mail</label>
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>
+                    
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Password</label>
+                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        @Html.EditorFor(model => model.confirmPassword, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.confirmPassword, "", new { @class = "text-danger" })
+
+                    </div>
+
+                </div>
+
+            </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select id="role" name="role" class="form-control">
+                                    <option value="1">Super Administrator</option>
+                                    <option value="2">Administrator</option>
+                                    <option value="3">Manager</option>
+                                    <option value="4">Employee</option>
+                                </select>                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-right mt-4">
+                                <button type="submit" class="btn btn-primary">Add User</button>
+                            </div>
+                        </div>
+                    </div>
+                  
+
+                   
+                    
+
+                    
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#error").hide();
+        $("#bonus").val(0);
+
+
+        $("input[name=bruto]").on("blur", function (e) {
+            var myval = $(this).val();
+            if ($("#neto").val() != null) {
+                if (myval < $("#neto").val())
+                    $("#error").show();
+                else {
+                    $("#error").hide();
+
+                }
+            }
+
+        });
+
+        $('input[name=bruto]').on('input blur paste', function () {
+            $(this).val($(this).val().replace(/\D/g, ''))
+        });
+        $('input[name=neto]').on('input blur paste', function () {
+            $(this).val($(this).val().replace(/\D/g, ''))
+        });
+        $('input[name=bonus]').on('input blur paste', function () {
+            $(this).val($(this).val().replace(/\D/g, ''))
+        });
+
+    });
+
+
+
+</script>

@@ -1,0 +1,356 @@
+﻿
+@using easycounting.Models
+
+
+@{
+    ViewBag.Title = "Expenses";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    int k = 1;
+
+    DbEnt db = new DbEnt();
+    int id = Convert.ToInt32(ViewBag.id);
+    var lista = db.Bills.Where(x => x.companyID == id).ToList().OrderByDescending(x => x.billDate).Take(8);
+    var payments = db.Payments.Where(x => x.ExpenseCategory.companyID == id).ToList().OrderByDescending(x=>x.date).Take(8);
+
+    int a1 = Convert.ToInt32(ViewBag.paidPayemnts);
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Expenses</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Expenses</li>
+            </ul>
+        </div>
+        
+    </div>
+</div>
+<!-- /Page Header -->
+
+
+<div class="row">
+    <div class="col-md-5 col-sm-5">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title">Recent Expense Payments</h5>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("allpayments","expenses")" class="btn-right btn btn-sm btn-outline-primary">
+                            <i class="fa fa-list"></i> All Payments
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("addpayment","expenses")" class="btn-right btn btn-sm btn-outline-primary">
+                            <i class="fa fa-plus"></i> New Payment
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="progress progress-md rounded-pill mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" id="paidPayments" aria-valuenow="47" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-warning" role="progressbar" id="overduePayments" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-danger" role="progressbar" id="unpaidPayments" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-success mr-1"></i> Paid
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-warning mr-1"></i> Overdue
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-danger mr-1"></i> Unpaid
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-stripped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Total</th>
+                                <th>Payment Date</th>
+                                <th>Status</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var i in payments)
+                            {
+                            <tr>
+                                <td>@i.Vendor.name</td>
+                                <td>@i.date.ToString("dd/MM/yyyy")</td>
+                                <td>@String.Format("{0:n}", i.total) MKD</td>
+                                @if (i.status == "Paid")
+                                {
+                                    <td><span class="badge bg-success-light">@i.status</span></td>
+
+                                }
+                                @if (i.status == "Unpaid")
+                                {
+                                    <td><span class="badge bg-danger-light">@i.status</span></td>
+
+                                }
+                                @if (i.status == "Overdue")
+                                {
+                                    <td><span class="badge bg-warning-light">@i.status</span></td>
+
+                                }
+                                @if (i.status == "Paid")
+                                {
+                                    <td class="text-right">
+                                        <div class="btn-group">
+
+                                            <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("viewpayment", "expenses", new { id = i.paymentID })"><i class="far fa-eye mr-2 fa-sm"></i></a>
+                                            <a class="btn btn-outline-primary btn-sm mr-1 disabled" href="#"><i class="far fa-edit mr-2"></i></a>
+
+                                            <a class="btn btn-outline-primary btn-sm mr-1 disabled" href="#" ><i class="far fa-trash-alt mr-2"></i></a>
+                                        </div>
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-right">
+                                        <div class="btn-group">
+
+                                            <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("viewpayment", "expenses", new { id = i.paymentID })"><i class="far fa-eye mr-2 fa-sm"></i></a>
+                                            <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("editpayment", "expenses", new { id = i.paymentID })"><i class="far fa-edit mr-2"></i></a>
+
+                                            <a class="btn btn-outline-primary btn-sm mr-1" href="javascript:void(0);" data-toggle="modal" data-target="#delete_payment-@i.paymentID"><i class="far fa-trash-alt mr-2"></i></a>
+                                        </div>
+
+                                    </td>
+                                }
+
+                            </tr>
+
+                                <!-- Delete  Modal -->
+                                <div id="delete_payment-@i.paymentID" class="modal custom-modal fade" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Delete Payment</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("deletepayment", "expenses", new { id = i.paymentID }, FormMethod.Post))
+                                                {
+
+
+                                                    <div class="form-group">
+                                                        <h3> Payment ID @i.paymentID</h3>
+                                                        <p> For Vendor: @i.Vendor.name <br /> Total amount: @String.Format("{0:n}", i.total)</p>
+                                                        <h5>Are you sure that you want to delete this payment?</h5>
+                                                    </div>
+
+                                                    <div class="submit-section">
+                                                        <input type="submit" class="btn btn-danger submit-btn" value="Delete Payment" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Delete Modal -->
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-md-7 col-sm-7">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title">Bills</h5>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("allbills","expenses")" class="btn-right btn btn-sm btn-outline-primary">
+                            <i class="fa fa-list"></i> All Bills
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("create","expenses")" class="btn-right btn btn-sm btn-outline-primary">
+                            <i class="fa fa-plus"></i> New Bill
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="progress progress-md rounded-pill mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" id="paidBills" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-danger" role="progressbar" id="unpaidBills" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-warning" role="progressbar" id="overdueBills" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-success mr-1"></i> Paid
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-warning mr-1"></i> Overdue
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-circle text-danger mr-1"></i> Unpaid
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+
+
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Bill No</th>
+                                <th>Vendor</th>
+                                <th>Bill Date</th>
+                                <th class="text-right">Amount</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in lista)
+                            {
+
+
+                                <tr>
+                                    <td>@item.billNo</td>
+                                    <td>@item.Vendor.name</td>
+                                    <td>@item.billDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-right">@String.Format("{0:n}", item.total) MKD</td>
+                                    <td>@item.ExpenseCategory.name </td>
+
+                                    @if (item.status == "Paid")
+                                    {
+                                        <td><span class="badge bg-success-light">@item.status</span></td>
+
+                                    }
+                                    @if (item.status == "Unpaid")
+                                    {
+                                        <td><span class="badge bg-danger-light">@item.status</span></td>
+
+                                    }
+                                    @if (item.status == "Overdue")
+                                    {
+                                        <td><span class="badge bg-warning-light">@item.status</span></td>
+
+                                    }
+
+                                    @if (item.status == "Paid")
+                                    {
+                                        <td class="text-right">
+                                            <div class="btn-group">
+
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("bill", "expenses", new { id = item.billID })"><i class="far fa-eye mr-2 fa-sm"></i></a>
+                                                <a class="btn btn-outline-primary btn-sm mr-1 disabled" href="#"><i class="far fa-edit mr-2"></i></a>
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("downloadbill", "expenses", new { id = item.billID })"><i class="fa fa-download mr-2"></i></a>
+
+                                                <a class="btn btn-outline-primary btn-sm mr-1 disabled" href="#"><i class="far fa-trash-alt mr-2"></i></a>
+                                            </div>
+
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-right">
+                                            <div class="btn-group">
+
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("bill", "expenses", new { id = item.billID })"><i class="far fa-eye mr-2 fa-sm"></i></a>
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("editbill", "expenses", new { id = item.billID })"><i class="far fa-edit mr-2"></i></a>
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="@Url.Action("downloadbill", "expenses", new { id = item.billID })"><i class="fa fa-download mr-2"></i></a>
+
+                                                <a class="btn btn-outline-primary btn-sm mr-1" href="javascript:void(0);" data-toggle="modal" data-target="#delete_bill-@item.billID"><i class="far fa-trash-alt mr-2"></i></a>
+                                            </div>
+
+                                        </td>
+                                    }
+
+                                </tr>
+
+
+                                <!-- Delete  Modal -->
+                                <div id="delete_bill-@item.billID" class="modal custom-modal fade" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Delete Bill</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("deletebill", "expenses", new { id = item.billID }, FormMethod.Post))
+                                                {
+
+
+                                                    <div class="form-group">
+                                                        <h3> Bill No. @item.billNo</h3>
+                                                        <p> For Vendor: @item.Vendor.name <br /> Total amount: @String.Format("{0:n}", item.total)</p>
+                                                        <h5>Are you sure that you want to delete this bill?</h5>
+                                                    </div>
+
+                                                    <div class="submit-section">
+                                                        <input type="submit" class="btn btn-danger submit-btn" value="Delete Bill" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Delete Modal -->
+                            }
+
+
+
+
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $("#paidPayments").css("width", "@(Convert.ToInt32(ViewBag.paidPayments))%");
+        $("#unpaidPayments").css("width", "@(Convert.ToInt32(ViewBag.unpaidPayments))%");
+        $("#overduePayments").css("width", "@(Convert.ToInt32(ViewBag.overduePayments))%");
+
+       
+         $("#paidBills").css("width", "@(Convert.ToInt32(ViewBag.paidBills))%");
+        $("#unpaidBills").css("width", "@(Convert.ToInt32(ViewBag.unpaidBills))%");
+        $("#overdueBills").css("width", "@(Convert.ToInt32(ViewBag.overdueBills))%");
+    });
+
+
+</script>

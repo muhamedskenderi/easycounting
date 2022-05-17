@@ -1,0 +1,112 @@
+﻿@model easycounting.Models.Payment
+
+@{
+    ViewBag.Title = "View Payment";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+}
+
+
+
+
+
+<script>
+        function printDiv() {
+            var divContents = document.getElementById("data").innerHTML;
+            var a = window.open('', '', 'height=500, width=500');
+            a.document.write('<html>');
+            a.document.write('<body >  <br>');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+        }
+</script>
+
+
+<div class="row">
+    <div class="col-xl-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <div id="data">
+                    <h3>Payment</h3>
+                    <dl class="dl-horizontal mt-5">
+                        <dt>
+                            Date of performance
+                        </dt>
+
+                        <dd>
+                            @Model.date.ToString("dd MMM yyyy") at @Model.date.ToString("HH:mm")
+                        </dd>
+
+
+                        <dt class="mt-5">
+                            Purpose of transaction
+                        </dt>
+
+
+
+
+                        <dd>
+                            Expenses Payment <br />
+                            Vendor: @Model.Vendor.name
+                        </dd>
+
+
+                        @if (Model.status == "Paid")
+                        {
+                            <dt class="mt-5">
+                                Bank account details
+                            </dt>
+
+                            <dd>
+                                @String.Format("************{0}", decrypt.Base64Decode(Model.Account.cardNo).Trim().Substring(12, 4)) <br />
+                                @Model.Account.nameOnCard<br />
+                                @Model.Account.bankName <br />
+                                Expiring on @Model.Account.exprDate
+
+
+                            </dd>
+                        }
+
+
+                        <dt class="mt-5">
+                            Status of payment
+                        </dt>
+
+                        @if (Model.status != "Paid")
+                        {
+                            <dd>
+                                @Html.DisplayFor(model => model.status) (<a href="@Url.Action("editpayment","expenses",new { id=Model.paymentID })">Pay Now</a>)
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                @Html.DisplayFor(model => model.status)
+                            </dd>
+                        }
+
+
+
+
+
+
+
+                        <dd style="font-size:20px" class="mt-5">
+                            Total Amount <br />
+
+                            @String.Format("{0:0.00}", Model.total) MKD
+                        </dd>
+
+
+                    </dl>
+                </div>
+                <a href="@Url.Action("allpayments","expenses")" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back to Payment</a>
+                <a onclick="printDiv()" class="btn btn-outline-primary"><i class="fa fa-print"></i> Print</a>
+            </div>
+        </div>
+    </div>
+</div>

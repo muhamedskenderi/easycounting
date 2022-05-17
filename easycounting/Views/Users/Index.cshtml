@@ -1,0 +1,244 @@
+﻿@model PagedList.IPagedList<easycounting.Models.UsersInCompany>
+@using PagedList.Mvc;
+
+@{
+    int k = 1;
+    ViewBag.Title = "All Users";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+    if (!string.IsNullOrEmpty(Request.Params["message"])) {
+        ViewBag.message = Request.Params["message"].ToString();
+    }
+    else {
+        ViewBag.message = null;
+    }
+}
+
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Users</li>
+            </ul>
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("create","users")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add User
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    @if (Model.Count() != 0)
+                    {
+                        
+                    <table class="table table-stripped table-hover ">
+
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>E-Mail</th>
+                                <th>Role</th>
+
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in ViewBag.OnePageOfUsers)
+                            {
+                                if (k % 2 != 0)
+                                {
+                                    <tr role="row" class="odd">
+                                        <td>@k</td>
+                                        <td class="sorting_1"><span class="text-info">@item.User.username</span></td>
+
+                                        <td>@item.User.email</td>
+                                        <td>@item.User.Role.role1</td>
+
+                                        <td class="text-right">
+
+                                            @if (ViewBag.role == 1)
+                                            {
+                                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#edit_password-@item.userID"><i class="fas fa-key"></i> Change Password</a>
+                                                <a class="btn btn-warning" href="@Url.Action("edit","users", new { id=item.User.userID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                <a class="btn btn-danger" href="javascript:void(0);" data-toggle="modal" data-target="#delete_user-@item.User.userID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+
+
+                                            }
+
+                                        </td>
+
+
+                                    </tr>
+                                    k++;
+                                }
+
+                                else
+                                {
+                                    <tr role="row" class="even">
+                                        <td>@k</td>
+                                        <td class="sorting_1"><span class="text-info">@item.User.username</span></td>
+
+                                        <td>@item.User.email</td>
+                                        <td>@item.User.Role.role1</td>
+
+
+                                        <td class="text-right">
+                                            @if (ViewBag.role == 1)
+                                            {
+                                                <a class="btn btn-secondary" href="#" data-toggle="modal" data-target="#edit_password-@item.userID"><i class="fas fa-key"></i> Change Password</a>
+                                                <a class="btn btn-warning" href="@Url.Action("edit","users", new { id=item.User.userID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                <a class="btn btn-danger" href="javascript:void(0);" data-toggle="modal" data-target="#delete_user-@item.User.userID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+
+
+                                            }
+
+                                        </td>
+
+                                    </tr>
+                                    k++;
+                                }
+
+                                <!-- Delete  Modal -->
+                                <div id="delete_user-@item.User.userID" class="modal custom-modal fade" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Delete User</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("delete", "users", new { id = item.User.userID }, FormMethod.Post))
+                                                {
+
+
+                                                    <div class="form-group">
+                                                        <h3> @item.User.username</h3>
+                                                        <br /><br />
+                                                        <h5>Are you sure that you want to delete @item.User.username User?</h5>
+                                                    </div>
+
+                                                    <div class="submit-section">
+                                                        <input type="submit" class="btn btn-danger submit-btn" value="Delete User" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Delete Modal -->
+
+                                <!-- edit  Modal -->
+                                <div id="edit_password-@item.userID" class="modal custom-modal fade" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Change Password</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("changepassword", "users", new { id = item.userID }, FormMethod.Post))
+                                                {
+
+
+                                                    <div class="form-group">
+                                                        <label> New Password</label>
+                                                        <input type="password" name="pass" id="pass" required class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label> Confirm New Password</label>
+                                                        <input type="password" name="confirmPass" id="confirmPass" required class="form-control" />
+                                                    </div>
+                                                    <div class="submit-section">
+                                                        <p id="txtConfirmPassword"></p>
+                                                        <input type="submit" id="submit" class="btn btn-warning submit-btn" value="Update Password" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /edit Modal -->
+
+                            }
+
+
+
+                        </tbody>
+
+                    </table>
+
+
+                }
+                else
+                {
+                    <center>
+                        <h5 style="margin-top:10px">No users found. Add your first employee by clicking <a href="@Url.Action("create","users")">here</a>.</h5>
+                    </center>
+                }
+
+                    <div style="color:white;margin-left:50px" class="pageSwitch">
+                        <h5 style="color:white;width:15px">
+                            <a>
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+          new { page }), new PagedListRenderOptions { DelimiterBetweenPageNumbers = "|" })
+                            </a>
+                        </h5>
+
+                    </div>
+
+                    <div style="margin-left:50px">
+                        @if (ViewBag.message != null)
+                        { 
+                        <div class="alert alert-success" role="alert" style="width:550px">
+                            @ViewBag.message
+                        </div>
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+
+
+        $(document).ready(function () {
+
+            $("#submit").click(function (e) {
+
+                var password = $("#pass").val();
+                var confirmPassword = $("#confirmPass").val();
+                if (password != confirmPassword) {
+                    e.preventDefault();
+                    $("#txtConfirmPassword").text("Passwords does not match!");
+                }
+
+            });
+
+        });
+
+    </script>

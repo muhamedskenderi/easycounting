@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="497c59d7a8a84ca8a2b19f9d65c7f7d6" Name="Diagram1">
+        <EntityTypeShape EntityType="DbCon.Account" Width="1.5" PointX="3" PointY="55.375" />
+        <EntityTypeShape EntityType="DbCon.Active" Width="1.5" PointX="8" PointY="26.875" />
+        <EntityTypeShape EntityType="DbCon.Amortization" Width="1.5" PointX="5.75" PointY="13.25" />
+        <EntityTypeShape EntityType="DbCon.Bill" Width="1.5" PointX="5.25" PointY="41.5" />
+        <EntityTypeShape EntityType="DbCon.Company" Width="1.5" PointX="0.75" PointY="25.5" />
+        <EntityTypeShape EntityType="DbCon.Customer" Width="1.5" PointX="3" PointY="16.5" />
+        <EntityTypeShape EntityType="DbCon.Employee" Width="1.5" PointX="0.75" PointY="20.875" />
+        <EntityTypeShape EntityType="DbCon.EmployeesInCompany" Width="1.5" PointX="3" PointY="24.375" />
+        <EntityTypeShape EntityType="DbCon.ExpenseCategory" Width="1.5" PointX="3" PointY="59.5" />
+        <EntityTypeShape EntityType="DbCon.Invoice" Width="1.5" PointX="5.25" PointY="21.75" />
+        <EntityTypeShape EntityType="DbCon.Item" Width="1.5" PointX="5.25" PointY="27.25" />
+        <EntityTypeShape EntityType="DbCon.ItemsCategory" Width="1.5" PointX="3" PointY="20.375" />
+        <EntityTypeShape EntityType="DbCon.ItemsInBill" Width="1.5" PointX="7.5" PointY="36.375" />
+        <EntityTypeShape EntityType="DbCon.ItemsInInvoice" Width="1.5" PointX="7.5" PointY="22.75" />
+        <EntityTypeShape EntityType="DbCon.Passive" Width="1.5" PointX="3" PointY="52.125" />
+        <EntityTypeShape EntityType="DbCon.Payment" Width="1.5" PointX="5.25" PointY="50.75" />
+        <EntityTypeShape EntityType="DbCon.Payroll" Width="1.5" PointX="6" PointY="31.875" />
+        <EntityTypeShape EntityType="DbCon.Revenue" Width="1.5" PointX="5.25" PointY="16.75" />
+        <EntityTypeShape EntityType="DbCon.Role" Width="1.5" PointX="1.5" PointY="37.5" />
+        <EntityTypeShape EntityType="DbCon.SaleCategory" Width="1.5" PointX="3" PointY="13" />
+        <EntityTypeShape EntityType="DbCon.Tax" Width="1.5" PointX="3" PointY="32.625" />
+        <EntityTypeShape EntityType="DbCon.Transaction" Width="1.5" PointX="8.25" PointY="43.5" />
+        <EntityTypeShape EntityType="DbCon.User" Width="1.5" PointX="0.75" PointY="32.75" />
+        <EntityTypeShape EntityType="DbCon.UsersInCompany" Width="1.5" PointX="3" PointY="27.375" />
+        <EntityTypeShape EntityType="DbCon.Vendor" Width="1.5" PointX="3" PointY="43" />
+        <AssociationConnector Association="DbCon.FK_Accounts_Companies" />
+        <AssociationConnector Association="DbCon.FK_Payments_Accounts1" />
+        <AssociationConnector Association="DbCon.FK_Transactions_Accounts" />
+        <AssociationConnector Association="DbCon.FK_Active_Amortization" />
+        <AssociationConnector Association="DbCon.FK_Active_Companies" />
+        <AssociationConnector Association="DbCon.FK_Bills_Companies" />
+        <AssociationConnector Association="DbCon.FK_Bills_ExpenseCategory" />
+        <AssociationConnector Association="DbCon.FK_Bills_Vendors" />
+        <AssociationConnector Association="DbCon.FK_ItemsInBill_Bills" />
+        <AssociationConnector Association="DbCon.FK_Transactions_Bills" />
+        <AssociationConnector Association="DbCon.FK_Customers_Companies" />
+        <AssociationConnector Association="DbCon.FK_EmployeesInCompany_Companies" />
+        <AssociationConnector Association="DbCon.FK_ExpenseCategory_Companies" />
+        <AssociationConnector Association="DbCon.FK_Invoices_Companies" />
+        <AssociationConnector Association="DbCon.FK_Items_Companies" />
+        <AssociationConnector Association="DbCon.FK_ItemsCategory_Companies" />
+        <AssociationConnector Association="DbCon.FK_Passive_Companies" />
+        <AssociationConnector Association="DbCon.FK_Payrolls_Companies" />
+        <AssociationConnector Association="DbCon.FK_Taxes_Companies" />
+        <AssociationConnector Association="DbCon.FK_UsersInCompany_Companies" />
+        <AssociationConnector Association="DbCon.FK_Vendors_Companies" />
+        <AssociationConnector Association="DbCon.FK_Invoices_Customers" />
+        <AssociationConnector Association="DbCon.FK_Revenues_Customers" />
+        <AssociationConnector Association="DbCon.FK_EmployeesInCompany_Employees" />
+        <AssociationConnector Association="DbCon.FK_Payrolls_Employees" />
+        <AssociationConnector Association="DbCon.FK_Payments_ExpenseCategory" />
+        <AssociationConnector Association="DbCon.FK_Invoices_SaleCategory" />
+        <AssociationConnector Association="DbCon.FK_ItemsInInvoice_Invoices" />
+        <AssociationConnector Association="DbCon.FK_Items_ItemsCategory" />
+        <AssociationConnector Association="DbCon.FK_ItemsInBill_Items" />
+        <AssociationConnector Association="DbCon.FK_ItemsInInvoice_Items" />
+        <AssociationConnector Association="DbCon.FK_Payments_Vendors" />
+        <AssociationConnector Association="DbCon.FK_Transactions_Payments" />
+        <AssociationConnector Association="DbCon.FK_Payrolls_Users" />
+        <AssociationConnector Association="DbCon.FK_Transactions_Payrolls" />
+        <AssociationConnector Association="DbCon.FK_Revenues_SaleCategory" />
+        <AssociationConnector Association="DbCon.FK_Users_Roles" />
+        <AssociationConnector Association="DbCon.FK_Transactions_Users" />
+        <AssociationConnector Association="DbCon.FK_UsersInCompany_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

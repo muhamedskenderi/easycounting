@@ -1,0 +1,267 @@
+﻿@model PagedList.IPagedList<easycounting.Models.Payment>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "All Payments";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    int k = 1;
+
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+}
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">All Expense Payments </h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="easycounting/">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="easycounting/expenses/"></a>Expenses</li>
+                <li class="breadcrumb-item active">All Expense Payments</li>
+
+            </ul>
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("addpayment","expenses")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Payment
+            </a>
+           
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    @if (Model.Count() != 0)
+                    {
+                        <table class="table table-stripped table-hover ">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Vendor</th>
+                                    <th>Bank Name</th>
+                                    <th>Card No</th>
+                                    <th>Payment date</th>
+                                    <th>Category</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (k % 2 != 0)
+                                    {
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">@item.Vendor.name</td>
+
+                                            @if (item.status == "Paid")
+                                            {
+                                                <td>@item.Account.bankName</td>
+
+                                                <td>@String.Format("************{0}", decrypt.Base64Decode(item.Account.cardNo).Trim().Substring(12, 4))</td>
+
+                                            }
+                                            else
+                                            {
+                                                <td>N/A</td>
+
+                                                <td>N/A</td>
+                                            }
+                                            <td>@item.date.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.ExpenseCategory.name</td>
+
+                                            <td>@String.Format("{0:0.00}", item.total) MKD</td>
+                                            @if (item.status == "Paid")
+                                            {
+                                                <td><span class="badge bg-success-light">@item.status</span></td>
+
+                                            }
+                                            @if (item.status == "Unpaid")
+                                            {
+                                                <td><span class="badge bg-danger-light">@item.status</span></td>
+
+                                            }
+                                            @if (item.status == "Overdue")
+                                            {
+                                                <td><span class="badge bg-warning-light">@item.status</span></td>
+
+                                            }
+                                            @if (item.status == "Paid")
+                                            {
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item " href="@Url.Action("viewpayment","expenses", new { id=item.paymentID })"><i class="far fa-eye mr-2"></i>View</a>
+
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="@Url.Action("viewpayment","expenses", new { id=item.paymentID })"><i class="far fa-eye mr-2"></i>View</a>
+                                                            <a class="dropdown-item" href="@Url.Action("editpayment","expenses", new { id=item.paymentID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#delete_payment-@item.paymentID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                        </tr>
+                                        k++;
+                                    }
+
+                                    else
+                                    {
+                            <tr role="row" class="even">
+                                <td class="sorting_1">@item.Vendor.name</td>
+
+                                @if (item.status == "Paid")
+                                {
+                                    <td>@item.Account.bankName</td>
+
+                                    <td>@String.Format("************{0}", decrypt.Base64Decode(item.Account.cardNo).Trim().Substring(12, 4))</td>
+
+                                }
+                                else
+                                {
+                                    <td>N/A</td>
+
+                                    <td>N/A</td>
+                                }
+                                <td>@item.date.ToString("dd/MM/yyyy")</td>
+                                <td>@item.ExpenseCategory.name</td>
+
+                                <td>@String.Format("{0:0.00}", item.total) MKD</td>
+                                @if (item.status == "Paid")
+                                {
+                                    <td><span class="badge bg-success-light">@item.status</span></td>
+
+                                }
+                                @if (item.status == "Unpaid")
+                                {
+                                    <td><span class="badge bg-danger-light">@item.status</span></td>
+
+                                }
+                                @if (item.status == "Overdue")
+                                {
+                                    <td><span class="badge bg-warning-light">@item.status</span></td>
+
+                                }
+                                @if (item.status == "Paid")
+                                {
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item " href="@Url.Action("viewpayment","expenses", new { id=item.paymentID })"><i class="far fa-eye mr-2"></i>View</a>
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="@Url.Action("payment","expenses", new { id=item.paymentID })"><i class="far fa-eye mr-2"></i>View</a>
+                                                <a class="dropdown-item" href="@Url.Action("editpayment","expenses", new { id=item.paymentID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#delete_payment-@item.paymentID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+                                        k++;
+                                    }
+
+                                    <!-- Delete  Modal -->
+                                    <div id="delete_payment-@item.paymentID" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Delete Payment</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @using (Html.BeginForm("deletepayment", "expenses", new { id = item.paymentID }, FormMethod.Post))
+                                                    {
+
+
+                                                        <div class="form-group">
+                                                            <h3> Payment ID @item.paymentID</h3>
+                                                            <p> For Vendor: @item.Vendor.name <br /> Total amount: @String.Format("{0:0.00}", item.total)</p>
+                                                            <h5>Are you sure that you want to delete this payment?</h5>
+                                                        </div>
+
+                                                        <div class="submit-section">
+                                                            <input type="submit" class="btn btn-danger submit-btn" value="Delete Payment" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Delete Modal -->
+
+
+
+                                }
+
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    }
+                    else
+                    {
+                        <center>
+                            <h5 style="margin-top:10px">No payments found. Make your first payment by clicking <a href="@Url.Action("addpayment","expenses")">here</a>.</h5>
+                        </center>
+                    }
+
+                    <div style="color:white;margin-left:50px" class="pageSwitch">
+                        <h5 style="color:white;width:15px">
+                            <a>
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+          new { page }), new PagedListRenderOptions { DelimiterBetweenPageNumbers = "|" })
+                            </a>
+                        </h5>
+
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

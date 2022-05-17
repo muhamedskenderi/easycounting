@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DbConStoreContainer" CdmEntityContainer="DbEnt">
+    <EntitySetMapping Name="Accounts">
+      <EntityTypeMapping TypeName="DbCon.Account">
+        <MappingFragment StoreEntitySet="Accounts">
+          <ScalarProperty Name="hidden" ColumnName="hidden" />
+          <ScalarProperty Name="isDefault" ColumnName="isDefault" />
+          <ScalarProperty Name="cvc" ColumnName="cvc" />
+          <ScalarProperty Name="exprDate" ColumnName="exprDate" />
+          <ScalarProperty Name="bankName" ColumnName="bankName" />
+          <ScalarProperty Name="cardNo" ColumnName="cardNo" />
+          <ScalarProperty Name="nameOnCard" ColumnName="nameOnCard" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="accountID" ColumnName="accountID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Actives">
+      <EntityTypeMapping TypeName="DbCon.Active">
+        <MappingFragment StoreEntitySet="Active">
+          <ScalarProperty Name="datePerfomerd" ColumnName="datePerfomerd" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="amortizationID" ColumnName="amortizationID" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="accNo" ColumnName="accNo" />
+          <ScalarProperty Name="activeID" ColumnName="activeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Amortizations">
+      <EntityTypeMapping TypeName="DbCon.Amortization">
+        <MappingFragment StoreEntitySet="Amortization">
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="amortizationRateYearly" ColumnName="amortizationRateYearly" />
+          <ScalarProperty Name="saleDate" ColumnName="saleDate" />
+          <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
+          <ScalarProperty Name="amortizationID" ColumnName="amortizationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bills">
+      <EntityTypeMapping TypeName="DbCon.Bill">
+        <MappingFragment StoreEntitySet="Bills">
+          <ScalarProperty Name="taxID" ColumnName="taxID" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="expenseID" ColumnName="expenseID" />
+          <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+          <ScalarProperty Name="discount" ColumnName="discount" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="billDate" ColumnName="billDate" />
+          <ScalarProperty Name="billNo" ColumnName="billNo" />
+          <ScalarProperty Name="billID" ColumnName="billID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Companies">
+      <EntityTypeMapping TypeName="DbCon.Company">
+        <MappingFragment StoreEntitySet="Companies">
+          <ScalarProperty Name="ownersEquity" ColumnName="ownersEquity" />
+          <ScalarProperty Name="hidden" ColumnName="hidden" />
+          <ScalarProperty Name="currency" ColumnName="currency" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="taxNo" ColumnName="taxNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="DbCon.Customer">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="taxNo" ColumnName="taxNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="customerID" ColumnName="customerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="DbCon.Employee">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="bonus" ColumnName="bonus" />
+          <ScalarProperty Name="neto" ColumnName="neto" />
+          <ScalarProperty Name="bruto" ColumnName="bruto" />
+          <ScalarProperty Name="department" ColumnName="department" />
+          <ScalarProperty Name="position" ColumnName="position" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="employeeID" ColumnName="employeeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeesInCompanies">
+      <EntityTypeMapping TypeName="DbCon.EmployeesInCompany">
+        <MappingFragment StoreEntitySet="EmployeesInCompany">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="employeeID" ColumnName="employeeID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExpenseCategories">
+      <EntityTypeMapping TypeName="DbCon.ExpenseCategory">
+        <MappingFragment StoreEntitySet="ExpenseCategory">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="expenseID" ColumnName="expenseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Invoices">
+      <EntityTypeMapping TypeName="DbCon.Invoice">
+        <MappingFragment StoreEntitySet="Invoices">
+          <ScalarProperty Name="taxID" ColumnName="taxID" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="saleID" ColumnName="saleID" />
+          <ScalarProperty Name="customerID" ColumnName="customerID" />
+          <ScalarProperty Name="discount" ColumnName="discount" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="invoiceDate" ColumnName="invoiceDate" />
+          <ScalarProperty Name="invoiceNo" ColumnName="invoiceNo" />
+          <ScalarProperty Name="invoiceID" ColumnName="invoiceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="DbCon.Item">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+          <ScalarProperty Name="salePrice" ColumnName="salePrice" />
+          <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="itemID" ColumnName="itemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemsCategories">
+      <EntityTypeMapping TypeName="DbCon.ItemsCategory">
+        <MappingFragment StoreEntitySet="ItemsCategory">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemsInBills">
+      <EntityTypeMapping TypeName="DbCon.ItemsInBill">
+        <MappingFragment StoreEntitySet="ItemsInBill">
+          <ScalarProperty Name="qt" ColumnName="qt" />
+          <ScalarProperty Name="itemID" ColumnName="itemID" />
+          <ScalarProperty Name="billID" ColumnName="billID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemsInInvoices">
+      <EntityTypeMapping TypeName="DbCon.ItemsInInvoice">
+        <MappingFragment StoreEntitySet="ItemsInInvoice">
+          <ScalarProperty Name="qt" ColumnName="qt" />
+          <ScalarProperty Name="taxID" ColumnName="taxID" />
+          <ScalarProperty Name="discountItem" ColumnName="discountItem" />
+          <ScalarProperty Name="invoiceID" ColumnName="invoiceID" />
+          <ScalarProperty Name="itemID" ColumnName="itemID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Passives">
+      <EntityTypeMapping TypeName="DbCon.Passive">
+        <MappingFragment StoreEntitySet="Passive">
+          <ScalarProperty Name="datePerformed" ColumnName="datePerformed" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="accNo" ColumnName="accNo" />
+          <ScalarProperty Name="passiveID" ColumnName="passiveID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payments">
+      <EntityTypeMapping TypeName="DbCon.Payment">
+        <MappingFragment StoreEntitySet="Payments">
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="expenseID" ColumnName="expenseID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+          <ScalarProperty Name="accountID" ColumnName="accountID" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="paymentID" ColumnName="paymentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payrolls">
+      <EntityTypeMapping TypeName="DbCon.Payroll">
+        <MappingFragment StoreEntitySet="Payrolls">
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="employeeID" ColumnName="employeeID" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="month" ColumnName="month" />
+          <ScalarProperty Name="payrollID" ColumnName="payrollID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Revenues">
+      <EntityTypeMapping TypeName="DbCon.Revenue">
+        <MappingFragment StoreEntitySet="Revenues">
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="salesD" ColumnName="salesD" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="customerID" ColumnName="customerID" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="revenueID" ColumnName="revenueID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="DbCon.Role">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="role1" ColumnName="role" />
+          <ScalarProperty Name="roleID" ColumnName="roleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SaleCategories">
+      <EntityTypeMapping TypeName="DbCon.SaleCategory">
+        <MappingFragment StoreEntitySet="SaleCategory">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="saleID" ColumnName="saleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Taxes">
+      <EntityTypeMapping TypeName="DbCon.Tax">
+        <MappingFragment StoreEntitySet="Taxes">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="taxID" ColumnName="taxID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Transactions">
+      <EntityTypeMapping TypeName="DbCon.Transaction">
+        <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="accountID" ColumnName="accountID" />
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="payrollID" ColumnName="payrollID" />
+          <ScalarProperty Name="paymentID" ColumnName="paymentID" />
+          <ScalarProperty Name="billID" ColumnName="billID" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="transactionID" ColumnName="transactionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="DbCon.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="roleID" ColumnName="roleID" />
+          <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="userID" ColumnName="userID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersInCompanies">
+      <EntityTypeMapping TypeName="DbCon.UsersInCompany">
+        <MappingFragment StoreEntitySet="UsersInCompany">
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vendors">
+      <EntityTypeMapping TypeName="DbCon.Vendor">
+        <MappingFragment StoreEntitySet="Vendors">
+          <ScalarProperty Name="bankNo" ColumnName="bankNo" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="taxNo" ColumnName="taxNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="vendorID" ColumnName="vendorID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

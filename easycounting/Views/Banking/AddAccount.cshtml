@@ -1,0 +1,119 @@
+﻿@model easycounting.Models.Account
+
+@{
+    ViewBag.Title = "Add Account";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+
+<!-- Page Header -->
+<div class="page-header">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Add Banking Account</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("","banking")">Banking</a></li>
+                <li class="breadcrumb-item active">Add Banking Account</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Bank Account Information</h4>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name on Card</label>
+                                @Html.EditorFor(model => model.nameOnCard, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Card No</label>
+                                @Html.EditorFor(model => model.cardNo, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                @Html.EditorFor(model => model.bankName, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Expirty date</label>
+
+                            </div>
+
+
+                            <div class="input-group" style="margin-top:-20px">
+                                @Html.EditorFor(model => model.exprDate, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="input-group-append">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">MM/YY</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label>CVC Code</label>
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.cvc, new { htmlAttributes = new { @class = "form-control", @type="password" } })
+                                    <div class="input-group-append">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">CVC</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="text-right mt-4">
+                        <input type="submit" value="Add Banking Account" class="btn btn-primary" />
+                    </div>
+
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#cvc").attr('maxlength', '3');
+    });
+
+</script>

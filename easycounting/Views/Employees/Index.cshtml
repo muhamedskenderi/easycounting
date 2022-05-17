@@ -1,0 +1,202 @@
+﻿@model PagedList.IPagedList<easycounting.Models.EmployeesInCompany>
+@using PagedList.Mvc;
+
+@{
+    int k = 0;
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+}
+
+
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Employees</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Employees</li>
+            </ul>
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("create","employees")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Employee
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    @if (Model.Count() != 0)
+                    {
+                        <table class="table table-stripped table-hover ">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>E-Mail</th>
+                                    <th>Department</th>
+                                    <th>Position</th>
+                                    <th>Bruto</th>
+                                    <th>Neto</th>
+                                    <th>Bonus</th>
+
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (k % 2 != 0)
+                                    {
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1"><span class="text-info">@item.Employee.name</span></td>
+
+                                    <td>@item.Employee.email</td>
+                                    <td>@item.Employee.department</td>
+                                    <td>@item.Employee.position</td>
+                                    <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.bruto)) MKD</td>
+                                    <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.neto)) MKD</td>
+                                    @if (item.Employee.bonus != null)
+                                    {
+                                        <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.bonus)) MKD</td>
+
+                                    }
+
+                                    else
+                                    {
+                                        <td> - </td>
+
+                                    }
+
+
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="@Url.Action("edit","employees", new { id=item.employeeID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#delete_employee-@item.employeeID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                        k++;
+                                    }
+
+                                    else
+                                    {
+                                        <tr role="row" class="even">
+                                            <td class="sorting_1"><span class="text-info">@item.Employee.name</span></td>
+
+                                        <td>@item.Employee.email</td>
+                                    <td>@item.Employee.department</td>
+                                    <td>@item.Employee.position</td>
+                                    <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.bruto)) MKD</td>
+                                    <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.neto)) MKD</td>
+                                    @if (item.Employee.bonus != null)
+                                    {
+                                        <td>@String.Format("{0:n}", decrypt.Base64Decode(item.Employee.bonus)) MKD</td>
+
+                                    }
+
+                                    else
+                                    {
+                                        <td> - </td>
+
+                                    }
+
+                                            <td class="text-right">
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href="@Url.Action("edit","employees", new { id=item.employeeID })"><i class="far fa-edit mr-2"></i>Edit</a>
+
+                                                        <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#delete_employee-@item.employeeID"><i class="far fa-trash-alt mr-2"></i>Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                            k++;
+                                    }
+
+                                    <!-- Delete  Modal -->
+                                    <div id="delete_employee-@item.employeeID" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Delete Employee</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @using (Html.BeginForm("delete", "employees", new { id = item.employeeID }, FormMethod.Post))
+                                                    {
+
+
+                                                        <div class="form-group">
+                                                            <h3> @item.Employee.name</h3>
+                                                            <br /><br />
+                                                            <h5>Are you sure that you want to delete @item.Employee.name as Emlpoyee?</h5>
+                                                        </div>
+
+                                                        <div class="submit-section">
+                                                            <input type="submit" class="btn btn-danger submit-btn" value="Delete Employee" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Delete Modal -->
+
+
+
+                                }
+
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    }
+                    else
+                    {
+                        <center>
+                            <h5 style="margin-top:10px">No Employees found. Add your first employee by clicking <a href="@Url.Action("create","employees")">here</a>.</h5>
+                        </center>
+                    }
+
+                    <div style="color:white;margin-left:50px" class="pageSwitch">
+                        <h5 style="color:white;width:15px">
+                            <a>
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+          new { page }), new PagedListRenderOptions { DelimiterBetweenPageNumbers = "|" })
+                            </a>
+                        </h5>
+
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

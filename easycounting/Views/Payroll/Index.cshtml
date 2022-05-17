@@ -1,0 +1,172 @@
+﻿@model PagedList.IPagedList<easycounting.Models.Transaction>
+@using PagedList.Mvc;
+
+@{
+    int k = 1;
+    ViewBag.Title = "Payrolls";
+    Layout = "~/Views/Shared/Menu.cshtml";
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+    if (!string.IsNullOrEmpty(Request.Params["message"]))
+    {
+        ViewBag.message = Request.Params["message"].ToString();
+    }
+    else
+    {
+        ViewBag.message = null;
+    }
+}
+
+
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Payroll</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Payroll</li>
+            </ul>
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("create","payroll")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Payslip
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    @if (Model.Count() != 0)
+                    {
+
+                        <table class="table table-stripped table-hover ">
+
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Transaction Number</th>
+                                    <th>Date of transaction</th>
+                                    <th>Account</th>
+                                    <th>Employee</th>
+                                    <th>Total</th>
+                                    <th>Description</th>
+                                    <th>Performed by</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    if (k % 2 != 0)
+                                    {
+                                        <tr role="row" class="odd">
+                                            <td>@k</td>
+                                            <td class="sorting_1"><span class="text-info">@item.transactionID</span></td>
+                                            <td>@item.date.ToString("dd/MM/yyyy")</td>
+                                            <td>@String.Format("************{0}", decrypt.Base64Decode(item.Account.cardNo).Trim().Substring(12, 4)) <br />
+                                            </td>
+                                            <td>@item.Payroll.Employee.name</td>
+                                            <td>@String.Format("{0:n}", Convert.ToDouble(decrypt.Base64Decode(item.Payroll.Employee.bruto))) MKD</td>
+                                            <td>@item.Payroll.description</td>
+                                            <td>@item.User.username</td>
+
+                                            <td class="text-right">
+
+                                                <a class="btn btn-warning" href="@Url.Action("payslip","payroll", new { id=item.transactionID})"><i class="fas fa-file"></i>Payslip</a> 
+
+                                            </td>
+
+
+                                        </tr>
+                                        k++;
+                                    }
+
+                                    else
+                                    {
+                                            <tr role="row" class="even">
+                                                <td>@k</td>
+                                                <td class="sorting_1"><span class="text-info">@item.transactionID</span></td>
+                                                <td>@item.date.ToString("dd/MM/yyyy")</td>
+                                                <td>
+                                                    @String.Format("************{0}", decrypt.Base64Decode(item.Account.cardNo).Trim().Substring(12, 4)) <br />
+                                            </td>
+                                            <td>@item.Payroll.Employee.name</td>
+                                            <td>@String.Format("{0:n}", item.Payroll.Employee.bruto) MKD</td>
+                                            <td>@item.Payroll.description</td>
+                                            <td>@item.User.username</td>
+
+                                            <td class="text-right">
+
+                                                <a class="btn btn-warning" href="@Url.Action("payslip","payroll", new { id=item.transactionID})"><i class="fas fa-file"></i>Payslip</a>
+
+                                            </td>
+
+
+                                            </tr>
+                                        k++;
+                                    }
+
+                         
+                                }
+
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    }
+                    else
+                    {
+                        <center>
+                            <h5 style="margin-top:10px">No salary payment found. Add your first payment salary by clicking <a href="@Url.Action("create","payroll")">here</a>.</h5>
+                        </center>
+                    }
+
+                    <div style="color:white;margin-left:50px" class="pageSwitch">
+                        <h5 style="color:white;width:15px">
+                            <a>
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+          new { page }), new PagedListRenderOptions { DelimiterBetweenPageNumbers = "|" })
+                            </a>
+                        </h5>
+
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+        $(document).ready(function () {
+
+            $("#submit").click(function (e) {
+
+                var password = $("#pass").val();
+                var confirmPassword = $("#confirmPass").val();
+                if (password != confirmPassword) {
+                    e.preventDefault();
+                    $("#txtConfirmPassword").text("Passwords does not match!");
+                }
+
+            });
+
+        });
+
+</script>

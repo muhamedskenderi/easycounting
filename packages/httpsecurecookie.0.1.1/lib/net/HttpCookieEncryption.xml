@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HttpCookieEncryption</name>
+    </assembly>
+    <members>
+        <member name="T:System.Web.HttpCookieEncryption">
+            <summary>
+            Provides methods for Encrypting and Decrypting Cookies.
+            </summary>
+        </member>
+        <member name="M:System.Web.HttpCookieEncryption.Decrypt(System.Web.HttpCookie)">
+            <summary>
+            Decrypts the cookie.
+            </summary>
+            <param name="cookie">The cookie to decrypt.</param>
+            <returns>A new HttpCookie instance with the Value decrypted.</returns>
+        </member>
+        <member name="M:System.Web.HttpCookieEncryption.Decrypt(System.Web.HttpContext,System.String)">
+            <summary>
+            Retrieves and decrypts the specified cookie.
+            </summary>
+            <param name="context">The current Context.</param>
+            <param name="cookieName">The name of the Cookie to decrypt.</param>
+            <returns>An cloned HttpCookie instance with the Value decrypted.</returns>
+        </member>
+        <member name="M:System.Web.HttpCookieEncryption.Encrypt(System.Web.HttpCookie)">
+            <summary>
+            Returns an encrypted cookie without updating the Response.
+            </summary>
+            <param name="source">The cookie to encrypt</param>
+            <returns>An encrypted instance, cloned from the source.</returns>
+        </member>
+        <member name="M:System.Web.HttpCookieEncryption.Encrypt(System.Web.HttpContext,System.String)">
+            <summary>
+            Encrypts the specified cookie currently in the Response.
+            </summary>
+            <remarks>Note that this method actually changes the cookie currently in the Response.Cookies collection, 
+            whereas the other Encrypt overload only returns a new instance, cloned from the cookie.</remarks>
+            <param name="context"></param>
+            <param name="cookieName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:System.Web.Security.MachineKeyWrapper">
+            <summary>
+            Provides a hook into the current ASP.Net MachineKey parameters.
+            </summary>
+        </member>
+        <member name="M:System.Web.Security.MachineKeyWrapper.HexStringToByteArray(System.String)">
+            <summary>
+            Converts a hex string into a byte array.
+            </summary>
+            <param name="str">string to convert</param>
+            <returns>byte array</returns>
+        </member>
+        <member name="M:System.Web.Security.MachineKeyWrapper.ByteArrayToHexString(System.Byte[],System.Int32)">
+            <summary>
+            Converts a byte array into a hex string
+            </summary>
+            <param name="array">array to convert</param>
+            <param name="length">length of array to convert</param>
+            <returns>hex string representing the byte array.</returns>
+        </member>
+        <member name="M:System.Web.Security.MachineKeyWrapper.EncryptOrDecryptData(System.Boolean,System.Byte[],System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Encrypts and decrypts data using ASP.Net MachineKey configuration settings.
+            </summary>
+            <param name="encrypting">true if encrypting, false if decrypting</param>
+            <param name="data">the data to operate on</param>
+            <param name="mod"></param>
+            <param name="index">beginning index</param>
+            <param name="length">length of array to operate on</param>
+            <returns>encrypted or decrypted byte array</returns>
+        </member>
+    </members>
+</doc>

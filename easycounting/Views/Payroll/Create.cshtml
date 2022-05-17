@@ -1,0 +1,108 @@
+﻿@model easycounting.Models.Payroll
+
+@{
+    ViewBag.Title = "Add Payslip";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+
+
+<div class="page-header">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Payslip</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("","home")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/easycounting/payrolls">Payrolls</a></li>
+                <li class="breadcrumb-item active">Add Payslip</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Basic Information</h4>
+                @using (Html.BeginForm())
+                {
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Select Account for Payment</label>
+                                @Html.DropDownList("accountID", ViewBag.accounts as SelectList, new { @class = "form-control ", @style = "" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Select Employee</label>
+                                @Html.DropDownList("employeeID", ViewBag.employees as SelectList, new { @class = "form-control ", @style = "" })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Salary for Month</label>
+                            <select id="monthSalary" name="monthSalary" class="form-control">
+                                <option name="January" value="Jan">January</option>
+                                <option name="February" value="Feb">February</option>
+                                <option name="March" value="Mar">March</option>
+                                <option name="April" value="Apr">April</option>
+                                <option name="May" value="May">May</option>
+                                <option name="June" value="Jun">June</option>
+                                <option name="July" value="Jul">July</option>
+                                <option name="August" value="Aug">August</option>
+                                <option name="September" value="Sep">September</option>
+                                <option name="October" value="Oct">October</option>
+                                <option name="November" value="Nov">November</option>
+                                <option name="December" value="Dec">December</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Description</label>
+                                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-right mt-4">
+                                <button type="submit" class="btn btn-primary">Add Payslip</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                  
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

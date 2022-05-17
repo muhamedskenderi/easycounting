@@ -1,0 +1,120 @@
+﻿@model easycounting.Models.Transaction
+
+@{
+    ViewBag.Title = "Transaction" + Model.transactionID;
+    Layout = "~/Views/Shared/Menu.cshtml";
+    easycounting.Crypto decrypt = new easycounting.Crypto();
+}
+
+<script>
+        function printDiv() {
+            var divContents = document.getElementById("data").innerHTML;
+            var a = window.open('', '', 'height=500, width=500');
+            a.document.write('<html>');
+            a.document.write('<body >  <br>');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+        }
+</script>
+
+
+<div class="row">
+    <div class="col-xl-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <div id="data">
+                    <h3>Transaction @Model.transactionID</h3>
+                    <dl class="dl-horizontal mt-5">
+                        <dt>
+                            Date of performance
+                        </dt>
+
+                        <dd>
+                            @Model.date.ToString("dd MMM yyyy") at @Model.date.ToString("HH:mm")
+                        </dd>
+
+                        <dt class="mt-5">
+                            Purpose of transaction
+                        </dt>
+
+
+
+                        @if (Model.billID != null)
+                        {
+                            <dd>
+                                Bill Payment <br />
+                                Vendor: @Model.Bill.Vendor.name
+                            </dd>
+                        }
+
+                        @if (Model.paymentID != null)
+                        {
+                            <dd>
+                                Expenses Payment <br />
+                                Vendor: @Model.Bill.Vendor.name
+                            </dd>
+                        }
+
+
+
+                        <dt class="mt-5">
+                            Performed by user
+                        </dt>
+
+                        <dd>
+                            @Model.User.username
+                        </dd>
+
+                        <dt class="mt-5">
+                            Bank account details
+                        </dt>
+
+                        <dd>
+                            @String.Format("************{0}", decrypt.Base64Decode(Model.Account.cardNo).Trim().Substring(12, 4)) <br />
+                            @Model.Account.nameOnCard<br />
+                            @Model.Account.bankName <br />
+                            Expiring on @Model.Account.exprDate
+
+
+                        </dd>
+
+                        <dt class="mt-5">
+                            Status of transaction
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.status)
+                        </dd>
+
+
+
+                        @if (Model.billID != null)
+                        {
+                            <dd style="font-size:20px;" class="mt-5">
+                                Total Amount <br />
+
+                                @String.Format("{0:0.00}", Model.Bill.total) MKD
+                            </dd>
+                        }
+
+                        @if (Model.paymentID != null)
+                        {
+                            <dd style="font-size:20px" class="mt-5">
+                                Total Amount <br />
+
+                                @String.Format("{0:0.00}", Model.Payment.total) MKD
+                            </dd>
+                        }
+
+                    </dl>
+                </div>
+                <a href="@Url.Action("","banking")" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back to Transactions</a>
+                <a onclick="printDiv()" class="btn btn-outline-primary"><i class="fa fa-print"></i> Print</a>
+            </div>
+        </div>
+    </div>
+</div>

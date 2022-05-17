@@ -1,0 +1,131 @@
+﻿@model easycounting.Models.Revenue
+@{
+    ViewBag.Title = "Edit Revenue";
+    Layout = "~/Views/Shared/Menu.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Expenses</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="easycounting/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="easycounting/sales">Sales</a>
+                </li>
+                <li class="breadcrumb-item active">Edit Revenue</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="#">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Choose customer</label>
+                                    <div>
+                                        @Html.DropDownList("customerID", ViewBag.customers as SelectList, new { @class = "form-control ", @style = "" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>Choose payment expense category</label>
+                                    @Html.DropDownList("salesD", ViewBag.categories as SelectList, new { @class = "form-control ", @style = "" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    @if (Model.status == "Unpaid")
+                                    {
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="Unpaid" selected="selected">Unpaid</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Overdue" >Overdue</option>
+                                        </select>
+                                    }
+                                    else if (Model.status == "Paid")
+                                    {
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="Unpaid">Unpaid</option>
+                                            <option value="Paid" selected="selected">Paid</option>
+                                            <option value="Overdue" >Overdue</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="Unpaid">Unpaid</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Overdue" selected="selected">Overdue</option>
+                                        </select>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                     
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <label>Description:</label>
+                                @Html.TextAreaFor(x => x.description, 5, 5, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group" style="margin-top:115px">
+                                    <div class="input-group ">
+                                        @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @required = "required", autocomplete = "off" } })
+                                        <div class="input-group-append">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">MKD</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-right mt-4">
+                            <button type="submit" class="btn btn-primary">Update Revenue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#status").val(@(ViewBag.selected));
+
+    });
+
+    window.onload = function () {
+                $("#status").val(@(ViewBag.selected));
+
+    }
+</script>
